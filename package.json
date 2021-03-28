@@ -2,10 +2,9 @@
   "name": "with-typescript",
   "version": "1.0.0",
   "scripts": {
-    "start": "next",
+    "dev": "next",
     "build": "next build",
-    "productionStart": "next start",
-    "deploy": "next build && next start",
+    "start": "next start",
     "type-check": "tsc"
   },
   "dependencies": {
