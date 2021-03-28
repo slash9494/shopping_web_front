@@ -39,8 +39,4 @@ LYH.propTypes = {
   Component: PropTypes.elementType.isRequired,
 };
 
-//   export function reportWebVitals(metric: any) {
-//     console.log(metric);
-//   }
-
 export default wrapper.withRedux(LYH);

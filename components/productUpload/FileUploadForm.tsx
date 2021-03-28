@@ -106,7 +106,7 @@ function FileUploadForm(props: FileUploadProps) {
       <DroppedImageContainer>
         {Images.map((image, index) => (
           <DroppedImage
-            src={`http://localhost:5000/${image}`}
+            src={`https://shopping-m.herokuapp.com/${image}`}
             alt={`productImg-${index}`}
             key={index}
             onClick={() => {

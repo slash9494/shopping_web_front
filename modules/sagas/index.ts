@@ -3,7 +3,8 @@ import product from "./product";
 import { all, fork } from "redux-saga/effects";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:5000";
+// axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://shopping-m.herokuapp.com";
 axios.defaults.withCredentials = true;
 
 export function* rootSaga() {

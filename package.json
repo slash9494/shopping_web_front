@@ -5,6 +5,7 @@
     "start": "next",
     "build": "next build",
     "productionStart": "next start",
+    "deploy": "next build && next export",
     "type-check": "tsc"
   },
   "dependencies": {

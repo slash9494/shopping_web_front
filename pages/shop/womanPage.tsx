@@ -107,7 +107,7 @@ function womanPage() {
               <Link href={`/shop/detailview/womanProduct/${item._id}`}>
                 <CardMedia
                   className={classes.media}
-                  image={`http://localhost:5000/${item.images[0]}`}
+                  image={`https://shopping-m.herokuapp.com/${item.images[0]}`}
                 />
               </Link>
               <CardContent className={classes.cardContent}>

@@ -190,7 +190,7 @@ function cart() {
                 className={classes.itemContainer}
               >
                 <Img
-                  src={`http://localhost:5000/${items.productInfo.image}`}
+                  src={`https://shopping-m.herokuapp.com/${items.productInfo.image}`}
                   onClick={() =>
                     handleImgClick(items.productInfo.section, items.id)
                   }
