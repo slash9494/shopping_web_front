@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@700&family=Potta+One&family=Sriracha&display=swap");
+
+body {
+  margin: 0;
+  font-family: "Open Sans Condensed", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-top: 90;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.image-gallery-slide img {
+  height: 79vh;
+}
+
+.image-gallery {
+  height: 79vh;
+
+  @media screen and (max-width: 1025px) {
+    width: 60vw;
+  }
+
+  .image-gallery-thumbnails-wrapper.right {
+    position: absolute;
+    height: 79vh !important;
+    transition: opacity 0.33s ease-in-out;
+    -moz-transition: opacity 0.33s ease-in-out;
+    -webkit-transition: opacity 0.33s ease-in-out;
+    opacity: 0;
+
+    @media screen and (max-width: 1025px) {
+      opacity: 0;
+    }
+  }
+}
+
+.image-gallery:hover {
+  .image-gallery-thumbnails-wrapper.right {
+    opacity: 1;
+    height: 79vh !important;
+    transition: opacity 0.33s ease-in-out;
+    -moz-transition: opacity 0.33s ease-in-out;
+    -webkit-transition: opacity 0.33s ease-in-out;
+
+    @media screen and (max-width: 1025px) {
+      opacity: 0;
+    }
+  }
+}
+
+.image-gallery-slides {
+  height: 79vh;
+  width: 30vw;
+
+  @media screen and (max-width: 1025px) {
+    width: 60vw;
+  }
+}
+
+.image-gallery-icon.image-gallery-left-nav svg {
+  height: 60px;
+  box-shadow: none;
+}
+
+.image-gallery-icon.image-gallery-right-nav svg {
+  height: 60px;
+}
+
+.image-gallery-slide-wrapper.right {
+  width: 30vw !important;
+
+  @media screen and (max-width: 1025px) {
+    width: 60vw !important;
+  }
+}
