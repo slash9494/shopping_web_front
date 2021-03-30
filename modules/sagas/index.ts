@@ -5,7 +5,7 @@ import axios from "axios";
 
 axios.defaults.baseURL =
   process.env.NODE_ENV === "production"
-    ? "http://server.lyhshop.cf"
+    ? "https://shopping-m.herokuapp.com"
     : "http://localhost:5000";
 axios.defaults.withCredentials = true;
 
