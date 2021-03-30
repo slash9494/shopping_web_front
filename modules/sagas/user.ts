@@ -45,9 +45,7 @@ interface SignUpProps {
 }
 
 async function loginAPI(loginData: LoginAPIProps) {
-  const response = await axios.post("/api/users/login", loginData, {
-    withCredentials: true,
-  });
+  const response = await axios.post("/api/users/login", loginData);
   return response.data;
 }
 

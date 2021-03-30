@@ -5,6 +5,7 @@ import Dropzone from "react-dropzone";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import { RootState } from "../../modules/reducers";
+import Swal from "sweetalert2";
 type ImagesState = any[];
 
 type FileUploadProps = {
@@ -75,7 +76,11 @@ function FileUploadForm(props: FileUploadProps) {
       setImages([...Images, fileUploadInfo.data.filePath]);
       PropImages();
     } else if (fileUploadInfo?.data?.fileUploadSuccess === false) {
-      alert(" 파일을 업로드하는데 실패했습니다.");
+      Swal.fire(
+        " 파일을 업로드하는데 실패했습니다.",
+        "이미지 사이즈를 줄이거나 png,jpg파일로 업로드해주세요",
+        "error"
+      );
     } else return;
   }, [
     // props.refreshImages,
@@ -106,7 +111,7 @@ function FileUploadForm(props: FileUploadProps) {
       <DroppedImageContainer>
         {Images.map((image, index) => (
           <DroppedImage
-            src={`https://shopping-m.herokuapp.com/${image}`}
+            src={`${image}`}
             alt={`productImg-${index}`}
             key={index}
             onClick={() => {

@@ -119,9 +119,7 @@ function CartDrawer(props: CartDrawerProps) {
                 <>
                   <Grid item className={classes.item}>
                     <ImageContainer>
-                      <Img
-                        src={`https://shopping-m.herokuapp.com/${item.productInfo.image}`}
-                      />
+                      <Img src={`${item.productInfo.image}`} />
                     </ImageContainer>
                     <CardContent className={classes.cardContent}>
                       <Typography align="left">

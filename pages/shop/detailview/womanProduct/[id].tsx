@@ -72,8 +72,8 @@ function DetailProduct() {
       const images = loadProductByIdInfo?.data?.productInfo[0]?.images;
       const imagesArray = images?.map((image: any) => {
         return {
-          original: `https://shopping-m.herokuapp.com/${image}`,
-          thumbnail: `https://shopping-m.herokuapp.com/${image}`,
+          original: `${image}`,
+          thumbnail: `${image}`,
         };
       });
       setImageState(imagesArray);

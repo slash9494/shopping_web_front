@@ -108,7 +108,7 @@ function kidPage() {
               <Link href={`/shop/detailview/kidProduct/${item._id}`}>
                 <CardMedia
                   className={classes.media}
-                  image={`https://shopping-m.herokuapp.com/${item.images[0]}`}
+                  image={`${item.images[0]}`}
                 />
               </Link>
               <CardContent className={classes.cardContent}>

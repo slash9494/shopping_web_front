@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { DataGrid, GridColDef } from "@material-ui/data-grid";
 import wrapper, { IStore } from "../store/configureStore";
@@ -8,6 +8,8 @@ import { END } from "redux-saga";
 import { createSelector } from "reselect";
 import { RootState } from "../modules/reducers";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { useRouter } from "next/router";
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -38,11 +40,19 @@ const columns: GridColDef[] = [
 ];
 
 function payHistoryPage() {
+  const router = useRouter();
   const checkUserInfo = createSelector(
     (state: RootState) => state.userReducer,
     (userReducer) => userReducer.userInfo
   );
   const userInfo = useSelector(checkUserInfo);
+
+  useEffect(() => {
+    if (userInfo.data?.isAuth === false) {
+      Swal.fire("로그인을 해주세요", "", "info");
+      router.push("/signIn");
+    }
+  }, []);
 
   return (
     <AppContainer>

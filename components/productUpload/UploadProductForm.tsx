@@ -185,6 +185,7 @@ function UploadProductForm(props: any) {
       router.push("/");
     }
   }, [uploadProductInfo?.data?.upLoadProductSuccess]);
+  console.log(sizeValues, inputs.amountOfS);
   return (
     <Container className={classes.container}>
       <CssBaseline />
@@ -268,7 +269,7 @@ function UploadProductForm(props: any) {
             <Grid item xs={12} className={classes.sizeContainer}>
               <SizeListContainer>
                 <FormControlLabel
-                  value="S"
+                  value="1"
                   control={
                     <Checkbox
                       color="default"
@@ -292,7 +293,7 @@ function UploadProductForm(props: any) {
               </SizeListContainer>
               <SizeListContainer>
                 <FormControlLabel
-                  value="M"
+                  value="2"
                   control={
                     <Checkbox
                       color="default"
@@ -316,7 +317,7 @@ function UploadProductForm(props: any) {
               </SizeListContainer>
               <SizeListContainer>
                 <FormControlLabel
-                  value="L"
+                  value="3"
                   control={
                     <Checkbox
                       color="default"
