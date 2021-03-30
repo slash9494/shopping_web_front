@@ -17,6 +17,7 @@ import { END } from "redux-saga";
 import { useRouter } from "next/router";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Swal from "sweetalert2";
+import Head from "next/head";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -174,103 +175,108 @@ function cart() {
   }, [userInfo?.data?.cart?.productBuySuccess]);
 
   return (
-    <AppContainer>
-      {userInfo.data?.cart?.length > 0 ? <h2>장바구니</h2> : null}
-      <Grid container spacing={2}>
-        {userInfo.data?.cart?.length > 0 ? (
-          userInfo?.data?.cart.map((items: any) => {
-            return (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={3}
-                xl={3}
-                lg={3}
-                className={classes.itemContainer}
+    <>
+      <Head>
+        <title>LYHShop | 장바구니</title>
+      </Head>
+      <AppContainer>
+        {userInfo.data?.cart?.length > 0 ? <h2>장바구니</h2> : null}
+        <Grid container spacing={2}>
+          {userInfo.data?.cart?.length > 0 ? (
+            userInfo?.data?.cart.map((items: any) => {
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  xl={3}
+                  lg={3}
+                  className={classes.itemContainer}
+                >
+                  <Img
+                    src={`${items.productInfo.image}`}
+                    onClick={() =>
+                      handleImgClick(items.productInfo.section, items.id)
+                    }
+                  />
+                  <ItemDetailContainer>
+                    <Typography variant="h6" className={classes.text}>
+                      {items.productInfo.title}
+                    </Typography>
+                    <Typography className={classes.text}>
+                      {items.productInfo.color}
+                    </Typography>
+                    <Divider className={classes.divider} />
+                    <Typography className={classes.text}>
+                      {items.productInfo.price}원
+                    </Typography>
+                    <Typography className={classes.text}>
+                      {items.productInfo.size === 1
+                        ? "S"
+                        : items.productInfo.size === 2
+                        ? "M"
+                        : "L"}
+                    </Typography>
+                    <Divider className={classes.divider} />
+                    <Typography className={classes.text}>
+                      {items.quantity}개
+                    </Typography>
+                    <div>
+                      <DeleteIcon
+                        className={classes.deleteIcon}
+                        onClick={() =>
+                          handleRemoveItem(
+                            items.productInfo._id,
+                            items.productInfo.size
+                          )
+                        }
+                      />
+                    </div>
+                  </ItemDetailContainer>
+                </Grid>
+              );
+            })
+          ) : (
+            <EmptyContainer>
+              <Typography variant="h6">- 장바구니가 비어있습니다 -</Typography>
+            </EmptyContainer>
+          )}
+          {userInfo.data?.cart?.length > 0 ? (
+            <PayContainer>
+              <h2>총 {total}원</h2>
+              <PayPalScriptProvider
+                options={{
+                  "client-id":
+                    "AQtOFFRJSeihOZQZ4_cJP67f_2b5ZEoDO9B97g3sMjXs_XhgUie3P0vXXn4rDB6zKT3BvOdDatVDjMVY",
+                }}
               >
-                <Img
-                  src={`${items.productInfo.image}`}
-                  onClick={() =>
-                    handleImgClick(items.productInfo.section, items.id)
-                  }
-                />
-                <ItemDetailContainer>
-                  <Typography variant="h6" className={classes.text}>
-                    {items.productInfo.title}
-                  </Typography>
-                  <Typography className={classes.text}>
-                    {items.productInfo.color}
-                  </Typography>
-                  <Divider className={classes.divider} />
-                  <Typography className={classes.text}>
-                    {items.productInfo.price}원
-                  </Typography>
-                  <Typography className={classes.text}>
-                    {items.productInfo.size === 1
-                      ? "S"
-                      : items.productInfo.size === 2
-                      ? "M"
-                      : "L"}
-                  </Typography>
-                  <Divider className={classes.divider} />
-                  <Typography className={classes.text}>
-                    {items.quantity}개
-                  </Typography>
-                  <div>
-                    <DeleteIcon
-                      className={classes.deleteIcon}
-                      onClick={() =>
-                        handleRemoveItem(
-                          items.productInfo._id,
-                          items.productInfo.size
-                        )
-                      }
-                    />
-                  </div>
-                </ItemDetailContainer>
-              </Grid>
-            );
-          })
-        ) : (
-          <EmptyContainer>
-            <Typography variant="h6">- 장바구니가 비어있습니다 -</Typography>
-          </EmptyContainer>
-        )}
-        {userInfo.data?.cart?.length > 0 ? (
-          <PayContainer>
-            <h2>총 {total}원</h2>
-            <PayPalScriptProvider
-              options={{
-                "client-id":
-                  "AQtOFFRJSeihOZQZ4_cJP67f_2b5ZEoDO9B97g3sMjXs_XhgUie3P0vXXn4rDB6zKT3BvOdDatVDjMVY",
-              }}
-            >
-              <PayPalButtons
-                style={{
-                  layout: "horizontal",
-                  color: "black",
-                  tagline: false,
-                  height: 35,
-                }}
-                createOrder={(data, actions) => {
-                  return actions.order.create({
-                    purchase_units: [
-                      {
-                        amount: {
-                          value: `${total}`,
+                <PayPalButtons
+                  style={{
+                    layout: "horizontal",
+                    color: "black",
+                    tagline: false,
+                    height: 35,
+                  }}
+                  createOrder={(data, actions) => {
+                    return actions.order.create({
+                      purchase_units: [
+                        {
+                          amount: {
+                            value: `${total}`,
+                          },
                         },
-                      },
-                    ],
-                  });
-                }}
-                onApprove={onApprove}
-              />
-            </PayPalScriptProvider>
-          </PayContainer>
-        ) : null}
-      </Grid>
-    </AppContainer>
+                      ],
+                    });
+                  }}
+                  onApprove={onApprove}
+                />
+              </PayPalScriptProvider>
+            </PayContainer>
+          ) : null}
+        </Grid>
+      </AppContainer>
+    </>
   );
 }
 

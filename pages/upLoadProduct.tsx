@@ -9,6 +9,7 @@ import wrapper, { IStore } from "../store/configureStore";
 import axios from "axios";
 import { END } from "redux-saga";
 import UploadProductForm from "../components/productUpload/UploadProductForm";
+import Head from "next/head";
 function UploadForm() {
   const router = useRouter();
   const checkAuthInfo = createSelector(
@@ -26,7 +27,14 @@ function UploadForm() {
       router.replace("/signIn");
     }
   }, [userInfo?.data?.isAuth]);
-  return <UploadProductForm writer={userInfo.data._id} />;
+  return (
+    <>
+      <Head>
+        <title>LYHShop | 상품등록</title>
+      </Head>
+      <UploadProductForm writer={userInfo.data._id} />
+    </>
+  );
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(

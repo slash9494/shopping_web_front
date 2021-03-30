@@ -10,6 +10,7 @@ import { RootState } from "../modules/reducers";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const AppContainer = styled.div`
   width: 100vw;
@@ -55,22 +56,27 @@ function payHistoryPage() {
   }, []);
 
   return (
-    <AppContainer>
-      <DataGrid
-        rows={userInfo.data?.history.map((items: any, index: number) => {
-          return {
-            id: index,
-            상품이름: items.name,
-            가격: items.price,
-            수량: items.quantity,
-            사이즈: items.size === 1 ? "S" : items.size === 2 ? "M" : "L",
-            날짜: items.dateOfPurchase,
-          };
-        })}
-        columns={columns}
-        pageSize={10}
-      />
-    </AppContainer>
+    <>
+      <Head>
+        <title>LYHShop | 결제내역</title>
+      </Head>
+      <AppContainer>
+        <DataGrid
+          rows={userInfo.data?.history.map((items: any, index: number) => {
+            return {
+              id: index,
+              상품이름: items.name,
+              가격: items.price,
+              수량: items.quantity,
+              사이즈: items.size === 1 ? "S" : items.size === 2 ? "M" : "L",
+              날짜: items.dateOfPurchase,
+            };
+          })}
+          columns={columns}
+          pageSize={10}
+        />
+      </AppContainer>
+    </>
   );
 }
 export const getServerSideProps = wrapper.getServerSideProps(

@@ -22,7 +22,8 @@ const LYH = ({ Component, pageProps }: AppProps) => (
   <>
     <Head>
       <meta charSet="utf-8" />
-      <title>LYH</title>
+      <link rel="shortcut icon" href="/LYH_Icon.png" />
+      <title>LYHShop</title>
     </Head>
 
     <MuiThemeProvider theme={theme}>

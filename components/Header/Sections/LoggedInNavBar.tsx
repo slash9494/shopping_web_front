@@ -102,7 +102,7 @@ function LoggedInNavBar(props: LogInNavBarProps) {
           <LinkContainer>결제내역</LinkContainer>
         </Link>
         <Link href="/upLoadProduct">
-          <LinkContainer>업로드</LinkContainer>
+          <LinkContainer>상품등록</LinkContainer>
         </Link>
         <form
           onSubmit={onSubmit}

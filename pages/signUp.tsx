@@ -9,6 +9,7 @@ import axios from "axios";
 import { END } from "redux-saga";
 import { createSelector } from "reselect";
 import SignUpForm from "../components/SignUpForm";
+import Head from "next/head";
 
 function SignUp() {
   const { signUpInfo } = useSelector((state: RootState) => state.userReducer);
@@ -37,7 +38,14 @@ function SignUp() {
       router.replace("/");
     }
   }, []);
-  return <SignUpForm />;
+  return (
+    <>
+      <Head>
+        <title>LYHShop | 회원가입</title>
+      </Head>
+      <SignUpForm />
+    </>
+  );
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(

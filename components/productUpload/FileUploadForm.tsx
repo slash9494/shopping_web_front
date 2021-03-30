@@ -4,13 +4,25 @@ import { fileUploadActionAsync } from "../../modules";
 import Dropzone from "react-dropzone";
 import styled from "styled-components";
 import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { RootState } from "../../modules/reducers";
 import Swal from "sweetalert2";
+import classes from "*.module.css";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+
 type ImagesState = any[];
 
 type FileUploadProps = {
   refreshImages: Function;
 };
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    progress: {
+      color: "black",
+    },
+  })
+);
 
 const BlockContainer = styled.div`
   display: flex;
@@ -53,6 +65,7 @@ const DroppedImage = styled.img`
 `;
 
 function FileUploadForm(props: FileUploadProps) {
+  const classes = useStyles();
   const [Images, setImages] = useState<ImagesState>([]);
   const dispatch = useDispatch();
   const { fileUploadInfo } = useSelector(
@@ -78,7 +91,7 @@ function FileUploadForm(props: FileUploadProps) {
     } else if (fileUploadInfo?.data?.fileUploadSuccess === false) {
       Swal.fire(
         " 파일을 업로드하는데 실패했습니다.",
-        "이미지 사이즈를 줄이거나 png,jpg파일로 업로드해주세요",
+        "png,jpg파일로 업로드해주세요",
         "error"
       );
     } else return;
@@ -95,7 +108,7 @@ function FileUploadForm(props: FileUploadProps) {
     setImages(newImages);
     props.refreshImages(newImages);
   };
-  console.log(Images);
+
   return (
     <BlockContainer>
       <Dropzone onDrop={onDrop}>
@@ -103,6 +116,12 @@ function FileUploadForm(props: FileUploadProps) {
           <section>
             <DropzoneContainer {...getRootProps()}>
               <input {...getInputProps()} />
+              {fileUploadInfo.loading === true ? (
+                <CircularProgress
+                  className={classes.progress}
+                  style={{ position: "absolute" }}
+                />
+              ) : null}
               <AddPhotoAlternateIcon fontSize="large" />
             </DropzoneContainer>
           </section>

@@ -9,6 +9,7 @@ import wrapper, { IStore } from "../store/configureStore";
 import axios from "axios";
 import { END } from "redux-saga";
 import LoginForm from "../components/LoginForm";
+import Head from "next/head";
 
 function SignIn(props: any) {
   const { loginInfo } = useSelector((state: RootState) => state.userReducer);
@@ -34,7 +35,14 @@ function SignIn(props: any) {
       router.replace("/");
     }
   }, []);
-  return <LoginForm />;
+  return (
+    <>
+      <Head>
+        <title>LYHShop | 로그인</title>
+      </Head>
+      <LoginForm />;
+    </>
+  );
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(

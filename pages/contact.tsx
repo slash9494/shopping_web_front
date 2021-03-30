@@ -8,6 +8,7 @@ import { authCheckActionAsync } from "../modules";
 import { END } from "redux-saga";
 import { Divider, Typography } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
+import Head from "next/head";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,35 +67,43 @@ const DetailContainer = styled.div`
 function contact() {
   const classes = useStyles();
   return (
-    <AppContainer>
-      <BlockContainer>
-        <SectionContainer>
-          <Avatar alt="LYH" src="/LYH.png" className={classes.avatar} />
-        </SectionContainer>
-        <DividerContainer>
-          <Divider
-            orientation="vertical"
-            variant="inset"
-            className={classes.divider}
-          />
-        </DividerContainer>
-        <SectionContainer>
-          <DetailContainer>
-            <Typography variant="h3" style={{ paddingBottom: "20px" }}>
-              LEE YUN HYEON
-            </Typography>
-            <Typography variant="h5" style={{ paddingBottom: "5px" }}>
-              slash9494@naver.com
-            </Typography>
-            <Typography variant="h5">
-              <a href="https://github.com/slash9494" style={{ color: "black" }}>
-                <GitHubIcon />
-              </a>
-            </Typography>
-          </DetailContainer>
-        </SectionContainer>
-      </BlockContainer>
-    </AppContainer>
+    <>
+      <Head>
+        <title>LYHShop | 상세정보</title>
+      </Head>
+      <AppContainer>
+        <BlockContainer>
+          <SectionContainer>
+            <Avatar alt="LYH" src="/LYH.png" className={classes.avatar} />
+          </SectionContainer>
+          <DividerContainer>
+            <Divider
+              orientation="vertical"
+              variant="inset"
+              className={classes.divider}
+            />
+          </DividerContainer>
+          <SectionContainer>
+            <DetailContainer>
+              <Typography variant="h3" style={{ paddingBottom: "20px" }}>
+                LEE YUN HYEON
+              </Typography>
+              <Typography variant="h5" style={{ paddingBottom: "5px" }}>
+                slash9494@naver.com
+              </Typography>
+              <Typography variant="h5">
+                <a
+                  href="https://github.com/slash9494"
+                  style={{ color: "black" }}
+                >
+                  <GitHubIcon />
+                </a>
+              </Typography>
+            </DetailContainer>
+          </SectionContainer>
+        </BlockContainer>
+      </AppContainer>
+    </>
   );
 }
 

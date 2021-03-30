@@ -4,7 +4,6 @@ import { Typography } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Link from "next/link";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import { useSelector, useDispatch } from "react-redux";
@@ -121,7 +120,6 @@ function kidPage() {
           );
         })}
       </Grid>
-      <Button onClick={loadMoreProducts}>더보기</Button>
     </AppContainer>
   );
 }

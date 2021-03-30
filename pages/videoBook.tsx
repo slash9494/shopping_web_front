@@ -9,6 +9,7 @@ import ReactPlayer from "react-player";
 import { Typography, makeStyles, Theme, createStyles } from "@material-ui/core";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import Head from "next/head";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -151,105 +152,110 @@ function videoBook() {
     }
   }, []);
   return (
-    <AppContainer id="App">
-      <Fade duration={2000}>
-        <TitleConTextContainer>
-          <Fade duration={2000} delay={800}>
-            <Typography
-              variant="h4"
-              style={{
-                paddingBottom: "10px",
-                justifyContent: "center",
-                display: "flex",
-                paddingTop: "100px",
-                fontSize: "2vw",
-              }}
-            >
-              "지속 가능한 오프라인 매장을 설계하고 있습니다"
-            </Typography>
-          </Fade>
-        </TitleConTextContainer>
-      </Fade>
-      <BlockContainer id="videoSection" className="videoSection">
-        <VideoStoreContainer id="video1">
-          <ReactPlayer
-            url="https://player.vimeo.com/video/383980330?title=0&portrait=0&byline=0&autoplay=1&loop=1"
-            loop={true}
-            playing={true}
-            width="100%"
-            height="100%"
-          />
-        </VideoStoreContainer>
-        <Fade className={classes.fade}>
-          <ContextContainer>
-            <Typography
-              variant="h4"
-              style={{
-                justifyContent: "center",
-                display: "flex",
-                fontSize: "1.7vw",
-              }}
-            >
-              "매장에서 다채로운 환경을 즐겨보세요"
-            </Typography>
-            <Typography
-              variant="h6"
-              style={{
-                justifyContent: "center",
-                display: "flex",
-                fontSize: "1.2vw",
-              }}
-            >
-              최고 수준의 환경 효율적인 매장을 운영할 수 있도록 노력하고
-              있습니다.
-            </Typography>
-          </ContextContainer>
+    <>
+      <Head>
+        <title>LYHShop | 컬랙션</title>
+      </Head>
+      <AppContainer id="App">
+        <Fade duration={2000}>
+          <TitleConTextContainer>
+            <Fade duration={2000} delay={800}>
+              <Typography
+                variant="h4"
+                style={{
+                  paddingBottom: "10px",
+                  justifyContent: "center",
+                  display: "flex",
+                  paddingTop: "100px",
+                  fontSize: "2vw",
+                }}
+              >
+                "지속 가능한 오프라인 매장을 설계하고 있습니다"
+              </Typography>
+            </Fade>
+          </TitleConTextContainer>
         </Fade>
-        <VideoStoreContainer id="video2">
-          <ReactPlayer
-            url="https://player.vimeo.com/video/142621176?title=0&portrait=0&byline=0&autoplay=1&loop=1"
-            loop={true}
-            playing={true}
-            width="100%"
-            height="100%"
-          />
-        </VideoStoreContainer>
-      </BlockContainer>
-      <BlockContainer
-        style={{ backgroundColor: "black", height: "100%" }}
-        id="videoSection2"
-      >
-        <VideoManContainer id="videoMan">
-          <Fade className={classes.manVideoText}>
-            <Typography variant="h6" className={classes.textSize}>
-              "오가닉 코튼과 같이 더욱 지속 가능한 방법으로 <br />
-              생산된 소재 사용을 통해 편한함을 느낄 수 있습니다."
-            </Typography>
+        <BlockContainer id="videoSection" className="videoSection">
+          <VideoStoreContainer id="video1">
+            <ReactPlayer
+              url="https://player.vimeo.com/video/383980330?title=0&portrait=0&byline=0&autoplay=1&loop=1"
+              loop={true}
+              playing={true}
+              width="100%"
+              height="100%"
+            />
+          </VideoStoreContainer>
+          <Fade className={classes.fade}>
+            <ContextContainer>
+              <Typography
+                variant="h4"
+                style={{
+                  justifyContent: "center",
+                  display: "flex",
+                  fontSize: "1.7vw",
+                }}
+              >
+                "매장에서 다채로운 환경을 즐겨보세요"
+              </Typography>
+              <Typography
+                variant="h6"
+                style={{
+                  justifyContent: "center",
+                  display: "flex",
+                  fontSize: "1.2vw",
+                }}
+              >
+                최고 수준의 환경 효율적인 매장을 운영할 수 있도록 노력하고
+                있습니다.
+              </Typography>
+            </ContextContainer>
           </Fade>
-          <ReactPlayer
-            url="https://player.vimeo.com/video/372194764?title=0&portrait=0&byline=0&autoplay=1"
-            loop={true}
-            playing={true}
-            width="100vw"
-            height={ImgSize ? manImgSmSize : manImgFullSize}
-          />
-        </VideoManContainer>
-        <VideoManContainer id="videoMan2">
-          <Fade className={classes.manVideoText} style={{ right: 0 }}>
-            <Typography variant="h6" className={classes.textSize}>
-              "다양한 악세사리와 함께 내추럴 스타일을 추구합니다."
-            </Typography>
-          </Fade>
-          <ReactPlayer
-            url="https://player.vimeo.com/video/517759687?title=0&portrait=0&byline=0&autoplay=1"
-            loop={true}
-            playing={true}
-            width="100vw"
-            height={ImgSize ? manImgSmSize : manImgFullSize}
-          />
-        </VideoManContainer>
-      </BlockContainer>
-    </AppContainer>
+          <VideoStoreContainer id="video2">
+            <ReactPlayer
+              url="https://player.vimeo.com/video/142621176?title=0&portrait=0&byline=0&autoplay=1&loop=1"
+              loop={true}
+              playing={true}
+              width="100%"
+              height="100%"
+            />
+          </VideoStoreContainer>
+        </BlockContainer>
+        <BlockContainer
+          style={{ backgroundColor: "black", height: "100%" }}
+          id="videoSection2"
+        >
+          <VideoManContainer id="videoMan">
+            <Fade className={classes.manVideoText}>
+              <Typography variant="h6" className={classes.textSize}>
+                "오가닉 코튼과 같이 더욱 지속 가능한 방법으로 <br />
+                생산된 소재 사용을 통해 편한함을 느낄 수 있습니다."
+              </Typography>
+            </Fade>
+            <ReactPlayer
+              url="https://player.vimeo.com/video/372194764?title=0&portrait=0&byline=0&autoplay=1"
+              loop={true}
+              playing={true}
+              width="100vw"
+              height={ImgSize ? manImgSmSize : manImgFullSize}
+            />
+          </VideoManContainer>
+          <VideoManContainer id="videoMan2">
+            <Fade className={classes.manVideoText} style={{ right: 0 }}>
+              <Typography variant="h6" className={classes.textSize}>
+                "다양한 악세사리와 함께 내추럴 스타일을 추구합니다."
+              </Typography>
+            </Fade>
+            <ReactPlayer
+              url="https://player.vimeo.com/video/517759687?title=0&portrait=0&byline=0&autoplay=1"
+              loop={true}
+              playing={true}
+              width="100vw"
+              height={ImgSize ? manImgSmSize : manImgFullSize}
+            />
+          </VideoManContainer>
+        </BlockContainer>
+      </AppContainer>
+    </>
   );
 }
 
