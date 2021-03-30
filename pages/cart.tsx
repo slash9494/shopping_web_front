@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Grid, Divider, Typography } from "@material-ui/core";
+import {
+  Grid,
+  Divider,
+  Typography,
+  CircularProgress,
+  Backdrop,
+} from "@material-ui/core";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch, useSelector } from "react-redux";
@@ -275,6 +281,11 @@ function cart() {
             </PayContainer>
           ) : null}
         </Grid>
+        {userInfo.loading === true ? (
+          <Backdrop open={true} style={{ backgroundColor: "white", zIndex: 1 }}>
+            <CircularProgress style={{ color: "black" }} />
+          </Backdrop>
+        ) : null}
       </AppContainer>
     </>
   );

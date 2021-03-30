@@ -7,22 +7,12 @@ import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { RootState } from "../../modules/reducers";
 import Swal from "sweetalert2";
-import classes from "*.module.css";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 
 type ImagesState = any[];
 
 type FileUploadProps = {
   refreshImages: Function;
 };
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    progress: {
-      color: "black",
-    },
-  })
-);
 
 const BlockContainer = styled.div`
   display: flex;
@@ -65,7 +55,6 @@ const DroppedImage = styled.img`
 `;
 
 function FileUploadForm(props: FileUploadProps) {
-  const classes = useStyles();
   const [Images, setImages] = useState<ImagesState>([]);
   const dispatch = useDispatch();
   const { fileUploadInfo } = useSelector(
@@ -118,8 +107,7 @@ function FileUploadForm(props: FileUploadProps) {
               <input {...getInputProps()} />
               {fileUploadInfo.loading === true ? (
                 <CircularProgress
-                  className={classes.progress}
-                  style={{ position: "absolute" }}
+                  style={{ position: "absolute", color: "black" }}
                 />
               ) : null}
               <AddPhotoAlternateIcon fontSize="large" />

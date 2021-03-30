@@ -17,7 +17,7 @@ import { ADD_TO_CART_REQUEST, CartProductInfo } from "../../modules";
 import Swal from "sweetalert2";
 import { createSelector } from "reselect";
 import { RootState } from "../../modules/reducers";
-import { Snackbar } from "@material-ui/core";
+import { Snackbar, CircularProgress } from "@material-ui/core";
 import { useRouter } from "next/router";
 interface ProductDetailProps {
   cartProductInfo: CartProductInfo;
@@ -91,6 +91,14 @@ const PopOverButton = styled.button`
   @media screen and (min-width: 1025px) {
     display: none;
   }
+`;
+
+const ProgressContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
+  position: "relative";
 `;
 
 function ProductDetail(props: ProductDetailProps) {
@@ -225,6 +233,11 @@ function ProductDetail(props: ProductDetailProps) {
       <Button type="submit" onClick={handleAddToCart}>
         장바구니
       </Button>
+      {userInfo.loading === true ? (
+        <ProgressContainer>
+          <CircularProgress style={{ position: "absolute", color: "black" }} />
+        </ProgressContainer>
+      ) : null}
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={snackBarOpen}

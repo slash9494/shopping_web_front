@@ -85,6 +85,7 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   }),
   [ADD_TO_CART_REQUEST]: (state) => ({
     ...state,
+    userInfo: asyncState.load({ ...state.userInfo?.data }),
   }),
   [ADD_TO_CART_SUCCESS]: (state, action) => ({
     ...state,
@@ -99,6 +100,7 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   }),
   [REMOVE_CART_ITEM_REQUEST]: (state) => ({
     ...state,
+    userInfo: asyncState.load({ ...state.userInfo?.data }),
   }),
   [REMOVE_CART_ITEM_SUCCESS]: (state, action) => ({
     ...state,
@@ -113,6 +115,7 @@ const userReducer = createReducer<UserState, Action>(initialState, {
   }),
   [BUY_PRODUCTS_REQUEST]: (state) => ({
     ...state,
+    userInfo: asyncState.load({ ...state.userInfo?.data }),
   }),
   [BUY_PRODUCTS_SUCCESS]: (state, action) => ({
     ...state,

@@ -30,6 +30,7 @@ import {
   loadKidProductsActionAsync,
 } from "../../modules";
 import CartDrawer from "./Sections/CartDrawer";
+import { Backdrop, CircularProgress } from "@material-ui/core";
 export type Filters = {
   size: string[];
   category: number[];
@@ -57,8 +58,14 @@ function Header() {
     (userReducer) => userReducer.userInfo
   );
   const userInfo = useSelector(checkUserDataInfo);
+  const checkProductDataInfo = createSelector(
+    (state: RootState) => state.productReducer,
+    (productReducer) => productReducer.loadProductsInfo
+  );
+  const productsInfo = useSelector(checkProductDataInfo);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [badgeCount, setBadgeCount] = useState(0);
+  const [backdropOpen, setBackdropOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -69,6 +76,14 @@ function Header() {
       setBadgeCount(0);
     }
   }, [userInfo.data?.cart]);
+  useEffect(() => {
+    if (productsInfo.loading === true) {
+      setBackdropOpen(true);
+    }
+    if (productsInfo.loading === false) {
+      setBackdropOpen(false);
+    }
+  }, [productsInfo.loading]);
   const [filters, setFilters] = useState<Filters>({
     size: [],
     category: [],
@@ -231,6 +246,9 @@ function Header() {
         closeCartDrawer={closeCartDrawer}
         userCartInfo={userInfo.data?.cart}
       />
+      <Backdrop open={backdropOpen} style={{ backgroundColor: "white" }}>
+        <CircularProgress style={{ color: "black" }} />
+      </Backdrop>
     </>
   );
 }

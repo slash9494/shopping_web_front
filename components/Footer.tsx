@@ -13,9 +13,9 @@ const useStyles = makeStyles({
 const Container = styled.div`
   display: flex;
   width: 100vw;
-  height: 30px;
-  position: absolute;
+  height: 40px;
   justify-content: center;
+  padding: 10px;
 `;
 
 function Footer() {
