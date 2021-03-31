@@ -2,7 +2,7 @@
 
 (https://lyhshop.cf/)
 
-**`* paypal 결제 = id:[lyh@lyhshop.com](mailto:lyh@lyhshop.com) / pw:lyh12345678`**
+**`* paypal 결제 = id:[lyh@lyhshop.com] / pw:[lyh12345678]`**
 
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/70849655/113192288-89886100-9299-11eb-9d24-d55357e159e2.gif)
 
@@ -10,7 +10,7 @@
 
 !![ezgif com-gif-maker_(2)](https://user-images.githubusercontent.com/70849655/113192414-ae7cd400-9299-11eb-9e11-a1873688f179.gif)
 
-# 🕒성능 테스트
+# 🕒 성능 테스트
 
 ![_2021-04-01__2 44 22](https://user-images.githubusercontent.com/70849655/113192480-c5232b00-9299-11eb-8dad-281ca23a0b3d.png)
 
@@ -20,7 +20,7 @@
 
 ⇒ 이미지 사이즈 최적화 필요
 
-# ⛔에러이슈
+# ⛔ 에러이슈
 
 - http-proxy-middleware 타입스크립트 적용 에러
 
@@ -120,7 +120,7 @@
 
        실제 운영하는 서비스를 제공하는 사이트가 아니므로, 쿠키를 전달하지 않는 대신 샘플 계정으로 로그인을 유지하여 사이트를 이용할 수 있도록 결정.
 
-# 🛠️스택
+# 🛠️ 스택
 
 ## Front
 
@@ -156,7 +156,7 @@
 
 > MongoDB
 
-## 📌사용자의 좋은 경험을 위한 고찰
+## 📌 사용자의 좋은 경험을 위한 고찰
 
 - next-dynamic ⇒ 배포 후 성능을 측정하면서 번들사이즈가 크면 dynamic으로 코드를 스플릿하려 했지만 각 페이지 번들마다 사용자가 사이트를 이용하는데 크게 지장이 없어서 보류.
 - 로그인을 시도할 때 이메일이 잘못되었거나 비밀번호가 틀렸을 때 단순히 "로그인이 실패했습니다"라고 알람을 주었지만, 사용자가 명확한 원인을 알 수 있도록 "해당하는 이메일이 없습니다" 또는 "비밀번호가 틀렸습니다"로 수정.
