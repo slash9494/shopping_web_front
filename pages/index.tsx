@@ -3,8 +3,15 @@ import wrapper, { IStore } from "../store/configureStore";
 import { authCheckActionAsync } from "../modules";
 import { END } from "redux-saga";
 import axios from "axios";
+import dynamic from "next/dynamic";
 
-const IndexPage = () => <HomeLayout></HomeLayout>;
+const DynamicComponent = dynamic(() => import("../components/HomeLayout"), {
+  loading: () => <p>loading...</p>,
+});
+
+function IndexPage() {
+  return <DynamicComponent />;
+}
 
 export const getServerSideProps = wrapper.getServerSideProps(
   async (context) => {
