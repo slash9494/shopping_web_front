@@ -1,22 +1,27 @@
 const withReactSvg = require("next-react-svg");
 const path = require("path");
-
-module.exports = withReactSvg({
-  include: path.resolve(__dirname, "src/assets/svg"),
-  webpack(config, options) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      issuer: {
-        test: /\.(js|ts)x?$/,
-      },
-      use: ["@svgr/webpack"],
-    });
-
-    return config;
-  },
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
 });
 
-module.exports = {
+module.exports = withBundleAnalyzer(
+  withReactSvg({
+    include: path.resolve(__dirname, "src/assets/svg"),
+    webpack(config, options) {
+      config.module.rules.push({
+        test: /\.svg$/,
+        issuer: {
+          test: /\.(js|ts)x?$/,
+        },
+        use: ["@svgr/webpack"],
+      });
+
+      return config;
+    },
+  })
+);
+
+module.exports = withBundleAnalyzer({
   webpack(config) {
     conf.module.rules.push({
       test: /\.svg$/,
@@ -40,38 +45,36 @@ module.exports = {
 
     return config;
   },
-};
+});
 
 const withAssetsImport = require("next-assets-import");
-module.exports = withAssetsImport({
-  urlLoaderOptions: {
-    rules: [
-      {
-        test: /\.(png|jpg|gif|mp4|svg)$/i,
-        use: [
-          {
-            loader: "url-loader",
-            options: {
-              limit: 8192,
+module.exports = withBundleAnalyzer(
+  withAssetsImport({
+    urlLoaderOptions: {
+      rules: [
+        {
+          test: /\.(png|jpg|gif|mp4|svg)$/i,
+          use: [
+            {
+              loader: "url-loader",
+              options: {
+                limit: 8192,
+              },
             },
-          },
-        ],
-      },
-    ],
-  },
-});
+          ],
+        },
+      ],
+    },
+  })
+);
 
 const withTM = require("next-transpile-modules")(["gsap"]);
 
-module.exports = withTM({});
+module.exports = withBundleAnalyzer(withTM({}));
 
 const withImages = require("next-images");
-module.exports = withImages({
-  inlineImageLimit: false,
-});
-
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
-  .BundleAnalyzerPlugin;
-module.exports = {
-  plugins: [new BundleAnalyzerPlugin()],
-};
+module.exports = withBundleAnalyzer(
+  withImages({
+    inlineImageLimit: false,
+  })
+);

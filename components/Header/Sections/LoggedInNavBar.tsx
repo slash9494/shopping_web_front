@@ -121,7 +121,11 @@ function LoggedInNavBar(props: LogInNavBarProps) {
           className="badge"
           onMouseOver={props.showCartDrawer}
         >
-          <img src="/Shopping-bag.svg" style={{ width: 40, height: 40 }} />
+          <img
+            src="/Shopping-bag.svg"
+            style={{ width: 40, height: 40 }}
+            alt="shopping_bag"
+          />
         </StyledBadge>
       </BagContainer>
     </Container>

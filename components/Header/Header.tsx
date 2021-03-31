@@ -177,7 +177,11 @@ function Header() {
         <LogoContainer>
           <LogoLink>
             <Link href="/">
-              <img src="/LYH.svg" style={{ height: "100%", width: "100%" }} />
+              <img
+                src="/LYH.svg"
+                style={{ height: "100%", width: "100%" }}
+                alt="LYH_logo"
+              />
             </Link>
           </LogoLink>
         </LogoContainer>
@@ -217,6 +221,7 @@ function Header() {
                     <img
                       src="/Shopping-bag.svg"
                       style={{ width: 30, height: 30 }}
+                      alt="shopping_bag"
                     />
                   </StyledBadge>
                 </LinkContainer>
