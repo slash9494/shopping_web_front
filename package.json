@@ -23,6 +23,7 @@
     "@zeit/next-css": "^1.0.1",
     "axios": "^0.21.1",
     "babel-plugin-inline-react-svg": "^2.0.0",
+    "babel-plugin-styled-components": "^1.12.0",
     "css-loader": "^5.0.2",
     "express": "^4.17.1",
     "faker": "^5.4.0",
@@ -63,7 +64,6 @@
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
     "@types/shortid": "0.0.29",
-    "babel-plugin-styled-components": "^1.12.0",
     "typescript": "4.0",
     "url-loader": "^4.1.1"
   },
