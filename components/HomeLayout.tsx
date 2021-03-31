@@ -114,7 +114,7 @@ function HomeLayout() {
               className="image"
               style={styles.imageStyle}
               image="/WomanCategory.jpg"
-              title="Woman"
+              title="Man"
             />
             <ContentContainer>WOMAN</ContentContainer>
           </MenuItemContainer>
@@ -124,8 +124,8 @@ function HomeLayout() {
             <CardMedia
               className="image"
               style={styles.imageStyle}
-              image="/KidCategory.jpg"
-              title="kid"
+              image="KidCategory.jpg"
+              title="Man"
             />
             <ContentContainer>KID</ContentContainer>
           </MenuItemContainer>

@@ -124,7 +124,7 @@ function LoggedInNavBar(props: LogInNavBarProps) {
           <img
             src="/Shopping-bag.svg"
             style={{ width: 40, height: 40 }}
-            alt="shopping_bag"
+            alt="shopping-bag"
           />
         </StyledBadge>
       </BagContainer>
