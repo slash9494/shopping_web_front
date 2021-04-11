@@ -1,6 +1,6 @@
 # E-commerce Web
 
-(https://lyhshop.cf/)
+**`Gateway timeout => 서버실행중이므로 새로고침`**(https://lyhshop.cf/)
 
 **`* paypal 결제 = id:[lyh@lyhshop.com] / pw:[lyh12345678]`**
 
