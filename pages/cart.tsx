@@ -277,7 +277,9 @@ function cart() {
                     });
                   }}
                   onApprove={onApprove}
-                />
+                >
+                  PayPalButtons
+                </PayPalButtons>
               </PayPalScriptProvider>
             </PayContainer>
           ) : null}
