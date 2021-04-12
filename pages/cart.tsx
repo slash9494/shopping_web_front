@@ -278,7 +278,7 @@ function cart() {
                   }}
                   onApprove={onApprove}
                 >
-                  PayPalButtons
+                  <div>PayPalButtons</div>
                 </PayPalButtons>
               </PayPalScriptProvider>
             </PayContainer>
