@@ -1,19 +1,39 @@
-import PayPalCheckout from "react-paypal-checkout-button";
-import "react-paypal-checkout-button/dist/index.css";
+import React from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+interface Props {
+  total: number;
+  onApporve: Function;
+}
 
-function PayPal() {
+function PayPal(props: Props) {
   return (
-    <PayPalCheckout
-      clientId="Af9OVjRheL06cma0E0ilsSgyNQCdikYYbzAoZ_437Idy82RW3Y3gTFqN7G7O-VQ0oIB3xF9_weG-aWjY"
-      amount={100}
-      currency="USD"
-      onSuccess={(data: any, order: any) => {
-        console.log(data, order);
+    <PayPalScriptProvider
+      options={{
+        "client-id":
+          "AQtOFFRJSeihOZQZ4_cJP67f_2b5ZEoDO9B97g3sMjXs_XhgUie3P0vXXn4rDB6zKT3BvOdDatVDjMVY",
       }}
-      onError={(error: any) => {
-        console.log(error);
-      }}
-    />
+    >
+      <PayPalButtons
+        style={{
+          layout: "horizontal",
+          color: "black",
+          tagline: false,
+          height: 35,
+        }}
+        createOrder={(data, actions) => {
+          return actions.order.create({
+            purchase_units: [
+              {
+                amount: {
+                  value: `${props.total}`,
+                },
+              },
+            ],
+          });
+        }}
+        onApprove={props.onApporve}
+      />
+    </PayPalScriptProvider>
   );
 }
 

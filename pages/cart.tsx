@@ -21,9 +21,9 @@ import wrapper, { IStore } from "../store/configureStore";
 import axios from "axios";
 import { END } from "redux-saga";
 import { useRouter } from "next/router";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import Swal from "sweetalert2";
 import Head from "next/head";
+import PayPal from "../components/utils/PayPal";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -252,35 +252,7 @@ function cart() {
           {userInfo.data?.cart?.length > 0 ? (
             <PayContainer>
               <h2>총 {total}원</h2>
-              <PayPalScriptProvider
-                options={{
-                  "client-id":
-                    "AQtOFFRJSeihOZQZ4_cJP67f_2b5ZEoDO9B97g3sMjXs_XhgUie3P0vXXn4rDB6zKT3BvOdDatVDjMVY",
-                }}
-              >
-                <PayPalButtons
-                  style={{
-                    layout: "horizontal",
-                    color: "black",
-                    tagline: false,
-                    height: 35,
-                  }}
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      purchase_units: [
-                        {
-                          amount: {
-                            value: `${total}`,
-                          },
-                        },
-                      ],
-                    });
-                  }}
-                  onApprove={onApprove}
-                >
-                  <div>PayPalButtons</div>
-                </PayPalButtons>
-              </PayPalScriptProvider>
+              <PayPal total={total} onApporve={onApprove} />
             </PayContainer>
           ) : null}
         </Grid>
