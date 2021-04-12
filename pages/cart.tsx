@@ -161,6 +161,7 @@ function cart() {
       })
       .catch((err: any) => alert(`결제하는데 실패했습니다. : ${err}`));
   };
+
   useEffect(() => {
     if (!userInfo?.data?.isAuth) {
       Swal.fire("로그인을 해주세요", "", "info");
@@ -276,7 +277,7 @@ function cart() {
                     });
                   }}
                   onApprove={onApprove}
-                ></PayPalButtons>
+                />
               </PayPalScriptProvider>
             </PayContainer>
           ) : null}
