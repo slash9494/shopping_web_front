@@ -14,12 +14,6 @@ function PayPal(props: Props) {
       }}
     >
       <PayPalButtons
-        style={{
-          layout: "horizontal",
-          color: "black",
-          tagline: false,
-          height: 35,
-        }}
         createOrder={(data, actions) => {
           return actions.order.create({
             purchase_units: [
@@ -32,6 +26,12 @@ function PayPal(props: Props) {
           });
         }}
         onApprove={props.onApporve}
+        style={{
+          layout: "horizontal",
+          color: "black",
+          tagline: false,
+          height: 35,
+        }}
       />
     </PayPalScriptProvider>
   );
