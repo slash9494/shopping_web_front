@@ -26,13 +26,13 @@ function UploadForm() {
       );
       router.replace("/signIn");
     }
-  }, [userInfo?.data?.isAuth]);
+  }, [userInfo?.data]);
   return (
     <>
       <Head>
         <title>LYHShop | 상품등록</title>
       </Head>
-      <UploadProductForm writer={userInfo.data._id} />
+      {userInfo.data ? <UploadProductForm writer={userInfo.data._id} /> : null}
     </>
   );
 }

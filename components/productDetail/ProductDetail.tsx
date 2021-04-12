@@ -161,11 +161,12 @@ function ProductDetail(props: ProductDetailProps) {
       });
     }
   };
+
   useEffect(() => {
-    if (userInfo.data?.cart?.addToCartSuccess === true) {
+    if (size > 0) {
       setSnackBarOpen(true);
     }
-  }, [userInfo.data?.cart?.addToCartSuccess]);
+  }, [userInfo.data?.cart]);
 
   return (
     <ProductDetailContainer>

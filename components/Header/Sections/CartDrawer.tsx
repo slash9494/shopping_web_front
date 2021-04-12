@@ -46,7 +46,7 @@ const Footer = styled.div`
   align-items: center;
   position: fixed;
   background: white;
-  top: 90%;
+  bottom: 0;
 `;
 
 const Button = styled.div`

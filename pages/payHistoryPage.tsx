@@ -49,11 +49,11 @@ function payHistoryPage() {
   const userInfo = useSelector(checkUserInfo);
 
   useEffect(() => {
-    if (userInfo.data?.isAuth === false) {
+    if (userInfo.data?.isAuth === false || userInfo.data === null) {
       Swal.fire("로그인을 해주세요", "", "info");
       router.push("/signIn");
     }
-  }, []);
+  }, [userInfo.data]);
 
   return (
     <>
@@ -61,20 +61,22 @@ function payHistoryPage() {
         <title>LYHShop | 결제내역</title>
       </Head>
       <AppContainer>
-        <DataGrid
-          rows={userInfo.data?.history.map((items: any, index: number) => {
-            return {
-              id: index,
-              상품이름: items.name,
-              가격: items.price,
-              수량: items.quantity,
-              사이즈: items.size === 1 ? "S" : items.size === 2 ? "M" : "L",
-              날짜: items.dateOfPurchase,
-            };
-          })}
-          columns={columns}
-          pageSize={10}
-        />
+        {userInfo.data ? (
+          <DataGrid
+            rows={userInfo.data?.history.map((items: any, index: number) => {
+              return {
+                id: index,
+                상품이름: items.name,
+                가격: items.price,
+                수량: items.quantity,
+                사이즈: items.size === 1 ? "S" : items.size === 2 ? "M" : "L",
+                날짜: items.dateOfPurchase,
+              };
+            })}
+            columns={columns}
+            pageSize={10}
+          />
+        ) : null}
       </AppContainer>
     </>
   );

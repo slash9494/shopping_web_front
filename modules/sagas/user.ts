@@ -112,11 +112,6 @@ function* addToCartAsyncSaga(action: any) {
       type: ADD_TO_CART_SUCCESS,
       payload: addToCartResult,
     });
-    const updateUserInfo = yield call(authCheckAPI);
-    yield put({
-      type: AUTH_CHECK_SUCCESS,
-      payload: updateUserInfo,
-    });
   } catch (error) {
     console.error(error);
     yield put({
@@ -148,11 +143,6 @@ function* removeCartItemAsyncSaga(action: any) {
     yield put({
       type: REMOVE_CART_ITEM_SUCCESS,
       payload: removeCartItemResult,
-    });
-    const updateUserInfo = yield call(authCheckAPI);
-    yield put({
-      type: AUTH_CHECK_SUCCESS,
-      payload: updateUserInfo,
     });
   } catch (error) {
     console.error(error);

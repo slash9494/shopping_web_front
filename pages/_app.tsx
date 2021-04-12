@@ -8,6 +8,9 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "../index.scss";
+import NProgress from "nprogress";
+import Router from "next/router";
+import "nprogress/nprogress.css";
 
 const theme = createMuiTheme({
   typography: {
@@ -17,6 +20,16 @@ const theme = createMuiTheme({
     primary: { main: "#000000" },
   },
 });
+NProgress.configure({
+  minimum: 0.3,
+  easing: "ease",
+  speed: 800,
+  showSpinner: false,
+});
+
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 const LYH = ({ Component, pageProps }: AppProps) => (
   <>
