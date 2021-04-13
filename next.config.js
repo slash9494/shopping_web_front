@@ -69,3 +69,9 @@ const withImages = require("next-images");
 module.exports = withImages({
   inlineImageLimit: false,
 });
+
+module.exports = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+};
