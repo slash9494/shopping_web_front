@@ -14,6 +14,7 @@ import {
   authCheckActionAsync,
   REMOVE_CART_ITEM_REQUEST,
   BUY_PRODUCTS_REQUEST,
+  CartInfo,
 } from "../modules";
 import { createSelector } from "reselect";
 import { RootState } from "../modules/reducers";
@@ -24,6 +25,187 @@ import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import Head from "next/head";
 import PayPal from "../components/utils/PayPal";
+import Footer from "../components/Footer";
+export interface UserCartInfo {
+  id: string;
+  quantity: number;
+  date: number;
+}
+
+function cart() {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [total, setTotal] = useState(0);
+  const checkUserInfo = createSelector(
+    (state: RootState) => state.userReducer,
+    (userReducer) => userReducer.userInfo
+  );
+  const userInfo = useSelector(checkUserInfo);
+  const calculateTotal = () => {
+    let priceArray: number[] = [];
+    if (userInfo.data?.cart?.length > 0) {
+      userInfo?.data?.cart.map((item: CartInfo) => {
+        priceArray.push(item.productInfo?.price * item.quantity);
+      });
+    }
+    const reducer = (accumulator: number, currentValue: number) =>
+      accumulator + currentValue;
+    const priceTotal = priceArray.reduce(reducer, 0);
+    setTotal(priceTotal);
+  };
+
+  const handleRemoveItem = (id: string, size: number) => {
+    dispatch({ type: REMOVE_CART_ITEM_REQUEST, id: id, size: size });
+  };
+  const handleImgClick = (section: string, id: number) => {
+    if (section === "man") {
+      return router.push(`/shop/detailview/manProduct/${id}`);
+    } else if (section === "woman") {
+      return router.push(`/shop/detailview/womanProduct/${id}`);
+    } else {
+      return router.push(`/shop/detailview/kidProduct/${id}`);
+    }
+  };
+  const onApprove = (
+    data: any,
+    actions: { order: { capture: () => Promise<any> } }
+  ) => {
+    return actions.order
+      .capture()
+      .then(function (details: { payer: string }) {
+        dispatch({
+          type: BUY_PRODUCTS_REQUEST,
+          cartInfo: userInfo.data?.cart,
+          paymentData: details,
+        });
+      })
+      .catch((err: Error) => alert(`결제하는데 실패했습니다. : ${err}`));
+  };
+
+  useEffect(() => {
+    if (!userInfo?.data?.isAuth) {
+      Swal.fire("로그인을 해주세요", "", "info");
+      router.push("/signIn");
+    }
+  }, [userInfo?.data]);
+  useEffect(() => {
+    calculateTotal();
+  }, [userInfo?.data?.cart]);
+  useEffect(() => {
+    if (userInfo?.data?.cart?.productBuySuccess === true) {
+      Swal.fire({
+        title: "결제를 완료했습니다.",
+        icon: "success",
+        html: '<a href="/payHistoryPage"><b>결제내역 조회하기</b></a> ',
+      });
+    }
+  }, [userInfo?.data?.cart?.productBuySuccess]);
+
+  return (
+    <>
+      <Head>
+        <title>LYHShop | 장바구니</title>
+      </Head>
+      <AppContainer>
+        {userInfo.data?.cart?.length > 0 ? <h2>장바구니</h2> : null}
+        <Grid container spacing={2} style={{ height: "100%" }}>
+          {userInfo.data?.cart?.length > 0 ? (
+            userInfo?.data?.cart.map((item: CartInfo) => {
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  xl={3}
+                  lg={3}
+                  className={classes.itemContainer}
+                >
+                  <Img
+                    src={`${item.productInfo?.image}`}
+                    onClick={() =>
+                      handleImgClick(item.productInfo?.section, item.id)
+                    }
+                  />
+                  <ItemDetailContainer>
+                    <div className="section">
+                      <Typography variant="h6" className={classes.text}>
+                        {item.productInfo?.title}
+                      </Typography>
+                      <Typography className={classes.text}>
+                        {item.productInfo?.color}
+                      </Typography>
+                    </div>
+                    <div className="section">
+                      <Divider />
+                      <Typography className={classes.text}>
+                        {item.productInfo?.price}원
+                      </Typography>
+                      <Typography className={classes.text}>
+                        {item.productInfo?.size === 1
+                          ? "S"
+                          : item.productInfo?.size === 2
+                          ? "M"
+                          : "L"}
+                      </Typography>
+                    </div>
+                    <Divider />
+                    <Typography className={classes.text}>
+                      {item.quantity}개
+                    </Typography>
+                    <div>
+                      <DeleteIcon
+                        className={classes.deleteIcon}
+                        onClick={() =>
+                          handleRemoveItem(
+                            item.productInfo?._id,
+                            item.productInfo?.size
+                          )
+                        }
+                      />
+                    </div>
+                  </ItemDetailContainer>
+                </Grid>
+              );
+            })
+          ) : (
+            <EmptyContainer>
+              <Typography variant="h6">- 장바구니가 비어있습니다 -</Typography>
+            </EmptyContainer>
+          )}
+          {userInfo.data?.cart?.length > 0 ? (
+            <PayContainer>
+              <h2>총 {total}원</h2>
+              <PayPal total={total} onApporve={onApprove} />
+            </PayContainer>
+          ) : null}
+        </Grid>
+        {userInfo.loading === true ? (
+          <Backdrop open={true} style={{ backgroundColor: "white", zIndex: 1 }}>
+            <CircularProgress style={{ color: "black" }} />
+          </Backdrop>
+        ) : null}
+      </AppContainer>
+      <Footer />
+    </>
+  );
+}
+
+export const getServerSideProps = wrapper.getServerSideProps(
+  async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : "";
+    axios.defaults.headers.Cookie = "";
+    if (context.req && cookie) {
+      axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch(authCheckActionAsync.request());
+    context.store.dispatch(END);
+    await (context.store as IStore).sagaTask?.toPromise();
+  }
+);
+
+export default cart;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,9 +218,6 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up("md")]: {
         height: "18vw",
       },
-    },
-    divider: {
-      marginTop: "3vw",
     },
     text: {
       [theme.breakpoints.down("sm")]: {
@@ -80,11 +259,17 @@ const AppContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  height: calc(100vh - 130px);
+  overflow: scroll;
 `;
 const ItemDetailContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-left: 10px;
+  .section {
+    padding-bottom: 3vw;
+    height: 40%;
+  }
 `;
 const PayContainer = styled.div`
   width: 100%;
@@ -104,179 +289,3 @@ const EmptyContainer = styled.div`
     no-repeat top;
   padding-top: 50px;
 `;
-
-export interface UserCartInfo {
-  id: string;
-  quantity: number;
-  date: number;
-}
-
-function cart() {
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const [total, setTotal] = useState(0);
-  const checkUserInfo = createSelector(
-    (state: RootState) => state.userReducer,
-    (userReducer) => userReducer.userInfo
-  );
-  const userInfo = useSelector(checkUserInfo);
-  const calculateTotal = () => {
-    let priceArray: number[] = [];
-    if (userInfo.data?.cart?.length > 0) {
-      userInfo?.data?.cart.map((items: any) => {
-        priceArray.push(items.productInfo.price * items.quantity);
-      });
-    }
-    const reducer = (accumulator: any, currentValue: any) =>
-      accumulator + currentValue;
-    const priceTotal = priceArray.reduce(reducer, 0);
-    setTotal(priceTotal);
-  };
-
-  const handleRemoveItem = (id: string, size: number) => {
-    dispatch({ type: REMOVE_CART_ITEM_REQUEST, id: id, size: size });
-  };
-  const handleImgClick = (section: string, id: string) => {
-    if (section === "man") {
-      return router.push(`/shop/detailview/manProduct/${id}`);
-    } else if (section === "woman") {
-      return router.push(`/shop/detailview/womanProduct/${id}`);
-    } else {
-      return router.push(`/shop/detailview/kidProduct/${id}`);
-    }
-  };
-  const onApprove = (
-    data: any,
-    actions: { order: { capture: () => Promise<any> } }
-  ) => {
-    return actions.order
-      .capture()
-      .then(function (details: { payer: any }) {
-        dispatch({
-          type: BUY_PRODUCTS_REQUEST,
-          cartInfo: userInfo.data?.cart,
-          paymentData: details,
-        });
-      })
-      .catch((err: any) => alert(`결제하는데 실패했습니다. : ${err}`));
-  };
-
-  useEffect(() => {
-    if (!userInfo?.data?.isAuth) {
-      Swal.fire("로그인을 해주세요", "", "info");
-      router.push("/signIn");
-    }
-  }, [userInfo?.data]);
-  useEffect(() => {
-    calculateTotal();
-  }, [userInfo?.data?.cart]);
-  useEffect(() => {
-    if (userInfo?.data?.cart?.productBuySuccess === true) {
-      Swal.fire({
-        title: "결제를 완료했습니다.",
-        icon: "success",
-        html: '<a href="/payHistoryPage"><b>결제내역 조회하기</b></a> ',
-      });
-    }
-  }, [userInfo?.data?.cart?.productBuySuccess]);
-
-  return (
-    <>
-      <Head>
-        <title>LYHShop | 장바구니</title>
-      </Head>
-      <AppContainer>
-        {userInfo.data?.cart?.length > 0 ? <h2>장바구니</h2> : null}
-        <Grid container spacing={2}>
-          {userInfo.data?.cart?.length > 0 ? (
-            userInfo?.data?.cart.map((items: any) => {
-              return (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={3}
-                  xl={3}
-                  lg={3}
-                  className={classes.itemContainer}
-                >
-                  <Img
-                    src={`${items.productInfo.image}`}
-                    onClick={() =>
-                      handleImgClick(items.productInfo.section, items.id)
-                    }
-                  />
-                  <ItemDetailContainer>
-                    <Typography variant="h6" className={classes.text}>
-                      {items.productInfo.title}
-                    </Typography>
-                    <Typography className={classes.text}>
-                      {items.productInfo.color}
-                    </Typography>
-                    <Divider className={classes.divider} />
-                    <Typography className={classes.text}>
-                      {items.productInfo.price}원
-                    </Typography>
-                    <Typography className={classes.text}>
-                      {items.productInfo.size === 1
-                        ? "S"
-                        : items.productInfo.size === 2
-                        ? "M"
-                        : "L"}
-                    </Typography>
-                    <Divider className={classes.divider} />
-                    <Typography className={classes.text}>
-                      {items.quantity}개
-                    </Typography>
-                    <div>
-                      <DeleteIcon
-                        className={classes.deleteIcon}
-                        onClick={() =>
-                          handleRemoveItem(
-                            items.productInfo._id,
-                            items.productInfo.size
-                          )
-                        }
-                      />
-                    </div>
-                  </ItemDetailContainer>
-                </Grid>
-              );
-            })
-          ) : (
-            <EmptyContainer>
-              <Typography variant="h6">- 장바구니가 비어있습니다 -</Typography>
-            </EmptyContainer>
-          )}
-          {userInfo.data?.cart?.length > 0 ? (
-            <PayContainer>
-              <h2>총 {total}원</h2>
-              <PayPal total={total} onApporve={onApprove} />
-            </PayContainer>
-          ) : null}
-        </Grid>
-        {userInfo.loading === true ? (
-          <Backdrop open={true} style={{ backgroundColor: "white", zIndex: 1 }}>
-            <CircularProgress style={{ color: "black" }} />
-          </Backdrop>
-        ) : null}
-      </AppContainer>
-    </>
-  );
-}
-
-export const getServerSideProps = wrapper.getServerSideProps(
-  async (context) => {
-    const cookie = context.req ? context.req.headers.cookie : "";
-    axios.defaults.headers.Cookie = "";
-    if (context.req && cookie) {
-      axios.defaults.headers.Cookie = cookie;
-    }
-    context.store.dispatch(authCheckActionAsync.request());
-    context.store.dispatch(END);
-    await (context.store as IStore).sagaTask?.toPromise();
-  }
-);
-
-export default cart;

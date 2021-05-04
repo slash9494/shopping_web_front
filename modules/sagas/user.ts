@@ -105,7 +105,7 @@ function* addToCartAsyncSaga(action: any) {
     const addToCartResult = yield call(
       addToCartAPI,
       action.id,
-      action.cartProductInfo,
+      action.productInfo,
       action.size
     );
     yield put({

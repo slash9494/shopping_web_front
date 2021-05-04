@@ -3,37 +3,6 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { signUpActionAsync } from "../modules";
 import Swal from "sweetalert2";
-const RegisterBlock = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-  padding-bottom: 35vh;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Button = styled.button`
-  background: black;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
-  height: 100%;
-  font-weight: bold;
-  &:hover {
-    background: #495057;
-  }
-`;
-
 function SignUpForm() {
   const [inputs, setInputs] = useState({
     email: "",
@@ -69,7 +38,7 @@ function SignUpForm() {
   };
 
   return (
-    <RegisterBlock>
+    <SignUpContainer>
       <Form onSubmit={onSubmit}>
         <label>Name</label>
         <input type="text" name="name" onChange={onChange} value={name} />
@@ -92,8 +61,38 @@ function SignUpForm() {
         <br />
         <Button type="submit">회원가입</Button>
       </Form>
-    </RegisterBlock>
+    </SignUpContainer>
   );
 }
 
 export default SignUpForm;
+const SignUpContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  padding-bottom: 35vh;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Button = styled.button`
+  background: black;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  height: 100%;
+  font-weight: bold;
+  &:hover {
+    background: #495057;
+  }
+`;

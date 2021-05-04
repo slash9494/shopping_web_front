@@ -1,7 +1,9 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useCallback } from "react";
 import TextField from "@material-ui/core/TextField";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
-
+interface Props {
+  searchValue: (value: string) => void;
+}
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
@@ -12,13 +14,16 @@ const useStyles = makeStyles(() =>
     },
   })
 );
-function SearchProduct(props: any) {
+function SearchProduct(props: Props) {
   const classes = useStyles();
   const [input, setInput] = useState("");
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInput(e.currentTarget.value);
-    props.searchValue(e.currentTarget.value);
-  };
+  const onChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setInput(e.currentTarget.value);
+      props.searchValue(e.currentTarget.value);
+    },
+    [props.searchValue, input]
+  );
 
   return (
     <form className={classes.root} noValidate autoComplete="off">

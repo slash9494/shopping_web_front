@@ -8,7 +8,7 @@
     "module": "commonJS",
     "moduleResolution": "node",
     "noEmit": true,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "resolveJsonModule": true,

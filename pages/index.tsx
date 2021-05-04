@@ -1,4 +1,3 @@
-import HomeLayout from "../components/HomeLayout";
 import wrapper, { IStore } from "../store/configureStore";
 import { authCheckActionAsync } from "../modules";
 import { END } from "redux-saga";

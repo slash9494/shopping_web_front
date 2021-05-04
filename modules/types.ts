@@ -24,11 +24,11 @@ export interface CartProductInfo {
   title: string;
   price: number;
   color: string;
-  size: Array<number>;
+  size: number;
   _id: string;
   description: string;
   descriptionTitle: string;
-  images: Array<string>;
+  image: string;
   section: string;
 }
 
@@ -92,6 +92,7 @@ export interface ProductByIdInfo {
   descriptionTitle: string;
   description: string;
   size: number[];
+  section: string;
   amountOfS: string;
   amountOfM: string;
   amountOfL: string;

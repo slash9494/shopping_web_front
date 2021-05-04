@@ -98,9 +98,7 @@ function DetailProduct() {
           thumbnailPosition="right"
         />
       </ImageContainer>
-      <ProductDetail
-        cartProductInfo={loadProductByIdInfo?.data?.productInfo[0]}
-      />
+      <ProductDetail productInfo={loadProductByIdInfo?.data?.productInfo[0]} />
     </AppContainer>
   );
 }

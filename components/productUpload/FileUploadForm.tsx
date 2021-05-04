@@ -7,52 +7,10 @@ import AddPhotoAlternateIcon from "@material-ui/icons/AddPhotoAlternate";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { RootState } from "../../modules/reducers";
 import Swal from "sweetalert2";
-
-type ImagesState = any[];
-
+type ImagesState = ImageData[];
 type FileUploadProps = {
   refreshImages: Function;
 };
-
-const BlockContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  @media (max-width: 768px) {
-    display: block;
-    width: 100%;
-  }
-`;
-
-const DropzoneContainer = styled.div`
-  width: 350px;
-  height: 240px;
-  border: 1px solid lightgray;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const DroppedImageContainer = styled.div`
-  display: flex;
-  width: 350px;
-  height: 240px;
-  overflow-x: scroll;
-  @media (max-width: 768px) {
-    width: 100%;
-    border: 1px solid lightgray;
-    scrollbar-width: 3px;
-  }
-`;
-
-const DroppedImage = styled.img`
-  min-width: 100%;
-  height: 100%;
-  cursor: pointer;
-`;
 
 function FileUploadForm(props: FileUploadProps) {
   const [Images, setImages] = useState<ImagesState>([]);
@@ -84,11 +42,7 @@ function FileUploadForm(props: FileUploadProps) {
         "error"
       );
     } else return;
-  }, [
-    // props.refreshImages,
-    fileUploadInfo?.data?.filePath,
-    fileUploadInfo?.data?.fileUploadSuccess,
-  ]);
+  }, [fileUploadInfo?.data?.filePath, fileUploadInfo?.data?.fileUploadSuccess]);
   const onDelete = (image: ImageData) => {
     const currentIndex = Images.indexOf(image);
 
@@ -132,3 +86,43 @@ function FileUploadForm(props: FileUploadProps) {
 }
 
 export default FileUploadForm;
+
+const BlockContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 768px) {
+    display: block;
+    width: 100%;
+  }
+`;
+
+const DropzoneContainer = styled.div`
+  width: 350px;
+  height: 240px;
+  border: 1px solid lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+const DroppedImageContainer = styled.div`
+  display: flex;
+  width: 350px;
+  height: 240px;
+  overflow-x: scroll;
+  @media (max-width: 768px) {
+    width: 100%;
+    border: 1px solid lightgray;
+    scrollbar-width: 3px;
+  }
+`;
+
+const DroppedImage = styled.img`
+  min-width: 100%;
+  height: 100%;
+  cursor: pointer;
+`;

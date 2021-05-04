@@ -4,7 +4,7 @@ import productReducer from "./ProductReducer";
 import { HYDRATE } from "next-redux-wrapper";
 export type RootState = ReturnType<typeof rootReducer>;
 
-const rootReducer = (state: any, action: any) => {
+const rootReducer = (state, action) => {
   switch (action.type) {
     case HYDRATE:
       return action.payload;

@@ -55,7 +55,7 @@ const DescriptionContainer = styled.div`
 
 function DetailProduct() {
   const [showThumbNail, setShowThumbNail] = useState(true);
-  const [imageState, setImageState] = useState<any>([]);
+  const [imageState, setImageState] = useState([]);
   useEffect(() => {
     if (window.innerWidth <= 1024) {
       return setShowThumbNail(false);
@@ -98,9 +98,7 @@ function DetailProduct() {
           thumbnailPosition="right"
         />
       </ImageContainer>
-      <ProductDetail
-        cartProductInfo={loadProductByIdInfo?.data?.productInfo[0]}
-      />
+      <ProductDetail productInfo={loadProductByIdInfo?.data?.productInfo[0]} />
     </AppContainer>
   );
 }

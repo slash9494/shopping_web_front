@@ -11,12 +11,79 @@ import {
 } from "@material-ui/core";
 import styled from "styled-components";
 import Link from "next/link";
+import { CartInfo } from "../../../modules/types";
 
 interface CartDrawerProps {
   open: boolean;
   closeCartDrawer: any;
-  userCartInfo: Array<any>;
+  userCartInfo: Array<CartInfo>;
 }
+function CartDrawer(props: CartDrawerProps) {
+  const classes = useStyles();
+  return (
+    <Drawer
+      open={props.open}
+      anchor="right"
+      variant="persistent"
+      onMouseLeave={props.closeCartDrawer}
+      transitionDuration={600}
+    >
+      <CartDrawerContainer>
+        <Grid container direction="column" className={classes.gridContainer}>
+          {props.userCartInfo?.length > 0 &&
+            props.userCartInfo?.map((item: CartInfo) => {
+              return (
+                <>
+                  <Grid item className={classes.item}>
+                    <ImageContainer>
+                      <Img src={`${item.productInfo?.image}`} />
+                    </ImageContainer>
+                    <CardContent className={classes.cardContent}>
+                      <Typography align="left">
+                        <Typography
+                          variant="subtitle1"
+                          style={{ fontWeight: "bold" }}
+                          className={classes.text}
+                        >
+                          {" "}
+                          {item.productInfo?.title}
+                        </Typography>
+                        <Typography className={classes.text}>
+                          {item.productInfo?.price}원
+                        </Typography>
+
+                        <Typography className={classes.text}>
+                          {item.productInfo?.size === 1
+                            ? "S"
+                            : item.productInfo?.size === 2
+                            ? "M"
+                            : "L"}
+                        </Typography>
+                        <Typography
+                          variant="subtitle2"
+                          className={classes.text}
+                        >
+                          {item.quantity}개
+                        </Typography>
+                      </Typography>
+                    </CardContent>
+                  </Grid>
+                  <Divider variant="middle" />
+                </>
+              );
+            })}
+        </Grid>
+      </CartDrawerContainer>
+      <Footer>
+        <Link href="/cart">
+          <Button>장바구니로 가기</Button>
+        </Link>
+      </Footer>
+    </Drawer>
+  );
+}
+
+export default CartDrawer;
 
 const CartDrawerContainer = styled.div`
   @media screen and (min-width: 1600px) {
@@ -25,6 +92,7 @@ const CartDrawerContainer = styled.div`
   @media screen and (max-width: 1600px) and (min-width: 1300px) {
     width: 400px;
   }
+  flex: 1;
   width: 250px;
   display: flex;
   flex-direction: column;
@@ -44,9 +112,7 @@ const Footer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
   background: white;
-  bottom: 0;
 `;
 
 const Button = styled.div`
@@ -100,70 +166,3 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-function CartDrawer(props: CartDrawerProps) {
-  const classes = useStyles();
-  return (
-    <Drawer
-      open={props.open}
-      anchor="right"
-      variant="persistent"
-      onMouseLeave={props.closeCartDrawer}
-      transitionDuration={600}
-    >
-      <CartDrawerContainer>
-        <Grid container direction="column" className={classes.gridContainer}>
-          {props.userCartInfo?.length > 0 &&
-            props.userCartInfo?.map((item: any) => {
-              return (
-                <>
-                  <Grid item className={classes.item}>
-                    <ImageContainer>
-                      <Img src={`${item.productInfo.image}`} />
-                    </ImageContainer>
-                    <CardContent className={classes.cardContent}>
-                      <Typography align="left">
-                        <Typography
-                          variant="subtitle1"
-                          style={{ fontWeight: "bold" }}
-                          className={classes.text}
-                        >
-                          {" "}
-                          {item.productInfo.title}
-                        </Typography>
-                        <Typography className={classes.text}>
-                          {item.productInfo.price}원
-                        </Typography>
-
-                        <Typography className={classes.text}>
-                          {item.productInfo.size === 1
-                            ? "S"
-                            : item.productInfo.size === 2
-                            ? "M"
-                            : "L"}
-                        </Typography>
-                        <Typography
-                          variant="subtitle2"
-                          className={classes.text}
-                        >
-                          {item.quantity}개
-                        </Typography>
-                      </Typography>
-                    </CardContent>
-                  </Grid>
-                  <Divider variant="middle" />
-                </>
-              );
-            })}
-        </Grid>
-      </CartDrawerContainer>
-      <Footer>
-        <Link href="/cart">
-          <Button>장바구니로 가기</Button>
-        </Link>
-      </Footer>
-    </Drawer>
-  );
-}
-
-export default CartDrawer;

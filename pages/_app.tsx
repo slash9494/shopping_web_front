@@ -5,7 +5,6 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import wrapper from "../store/configureStore";
 import type { AppProps /*, AppContext */ } from "next/app";
 import Header from "../components/Header/Header";
-import Footer from "../components/Footer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import "../index.scss";
 import NProgress from "nprogress";
@@ -43,8 +42,6 @@ const LYH = ({ Component, pageProps }: AppProps) => (
       <CssBaseline />
       <Header />
       <Component {...pageProps} />
-
-      <Footer />
     </MuiThemeProvider>
   </>
 );

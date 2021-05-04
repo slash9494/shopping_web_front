@@ -1,27 +1,185 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+import {
+  makeStyles,
+  createStyles,
+  Theme,
+  CardContent,
+  Typography,
+  Divider,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Popover,
+  Snackbar,
+  CircularProgress,
+} from "@material-ui/core";
 import "react-image-gallery/styles/css/image-gallery.css";
-import Popover from "@material-ui/core/Popover";
 import HelpIcon from "@material-ui/icons/Help";
 import Description from "./Description";
 import { useDispatch, useSelector } from "react-redux";
-import { ADD_TO_CART_REQUEST, CartProductInfo } from "../../modules";
+import { ADD_TO_CART_REQUEST, ProductByIdInfo } from "../../modules";
 import Swal from "sweetalert2";
 import { createSelector } from "reselect";
 import { RootState } from "../../modules/reducers";
-import { Snackbar, CircularProgress } from "@material-ui/core";
 import { useRouter } from "next/router";
 interface ProductDetailProps {
-  cartProductInfo: CartProductInfo;
+  productInfo: ProductByIdInfo;
 }
+function ProductDetail(props: ProductDetailProps) {
+  const router = useRouter();
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const checkUpUserInfo = createSelector(
+    (state: RootState) => state.userReducer,
+    (userReducer) => userReducer.userInfo
+  );
+  const userInfo = useSelector(checkUpUserInfo);
+  const [size, setSize] = useState<string | number>("");
+  const [open, setOpen] = useState(false);
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const PopOverOpen = Boolean(anchorEl);
+  const popOverId = open ? "simple-popover" : undefined;
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<{ value: unknown }>) => {
+      setSize(event.target.value as number);
+    },
+    [size]
+  );
+  const handleOpen = useCallback(() => {
+    setOpen(!open);
+  }, [open]);
+  const snackBarHandleClose = useCallback(() => {
+    setSnackBarOpen(false);
+  }, [snackBarOpen]);
+  const touchOpen = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    },
+    [anchorEl]
+  );
+  const touchClose = useCallback(() => {
+    setAnchorEl(null);
+  }, [anchorEl]);
+  const handleAddToCart = useCallback(() => {
+    const productId = props.productInfo?._id;
+    const productInfo = {
+      title: props.productInfo?.title,
+      size: size,
+      price: props.productInfo?.price,
+      image: props.productInfo?.images[0],
+      section: props.productInfo?.section,
+      color: props.productInfo?.color,
+      _id: props.productInfo?._id,
+    };
+    if (size === "") {
+      Swal.fire("사이즈를 선택해주세요", "", "info");
+      return;
+    } else if (userInfo.data?.isAuth === false) {
+      Swal.fire("로그인을 해주세요", "", "info");
+      router.push("/signIn");
+      return;
+    } else {
+      dispatch({
+        type: ADD_TO_CART_REQUEST,
+        id: productId,
+        productInfo: productInfo,
+        size: size,
+      });
+    }
+  }, [props, size, userInfo]);
+
+  useEffect(() => {
+    if (size > 0) {
+      setSnackBarOpen(true);
+    }
+  }, [userInfo.data?.cart]);
+
+  return (
+    <ProductDetailContainer>
+      <CardContent>
+        <Typography variant="h6" className={classes.title}>
+          {props.productInfo?.title} &nbsp;
+          <PopOverButton onClick={touchOpen}>
+            <HelpIcon fontSize="small" />
+            자세히 알아보기
+          </PopOverButton>
+          <Popover
+            id={popOverId}
+            open={PopOverOpen}
+            anchorEl={anchorEl}
+            onClose={touchClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
+            <Description
+              description={props.productInfo?.description}
+              descriptionTitle={props.productInfo?.descriptionTitle}
+            />
+          </Popover>
+        </Typography>
+        <Typography variant="body2">
+          {props.productInfo?.price} 원
+          <br />
+          색상: {props.productInfo?.color}
+        </Typography>
+      </CardContent>
+      <Divider classes={{ root: classes.divider }} />
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-controlled-open-select-label">사이즈</InputLabel>
+        <Select
+          labelId="demo-controlled-open-select-label"
+          id="demo-controlled-open-select"
+          open={open}
+          onClose={handleOpen}
+          onOpen={handleOpen}
+          value={size}
+          onChange={handleChange}
+        >
+          <MenuItem value="">
+            <em>사이즈 선택</em>
+          </MenuItem>
+          {props.productInfo?.size?.find((values) => values === 1) ? (
+            <MenuItem value={1}>S</MenuItem>
+          ) : null}
+          {props.productInfo?.size?.find((values) => values === 2) ? (
+            <MenuItem value={2}>M</MenuItem>
+          ) : null}
+          {props.productInfo?.size?.find((values) => values === 3) ? (
+            <MenuItem value={3}>L</MenuItem>
+          ) : null}
+        </Select>
+      </FormControl>
+
+      <Divider classes={{ root: classes.divider }} />
+      <Button type="submit" onClick={handleAddToCart}>
+        장바구니
+      </Button>
+      {userInfo.loading === true ? (
+        <ProgressContainer>
+          <CircularProgress style={{ position: "absolute", color: "black" }} />
+        </ProgressContainer>
+      ) : null}
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={snackBarOpen}
+        onClose={snackBarHandleClose}
+        message="장바구니에 담겼습니다."
+        key={"bottom" + "right"}
+      />
+    </ProductDetailContainer>
+  );
+}
+
+export default ProductDetail;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,7 +203,6 @@ const ProductDetailContainer = styled.div`
   width: 25vw;
   padding: 0 1.5vw;
   @media screen and (max-width: 1280px) {
-    /* width: 14vw; */
     padding: 0;
   }
   @media screen and (max-width: 1025px) {
@@ -100,154 +257,3 @@ const ProgressContainer = styled.div`
   padding-top: 10px;
   position: "relative";
 `;
-
-function ProductDetail(props: ProductDetailProps) {
-  const router = useRouter();
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const checkUpUserInfo = createSelector(
-    (state: RootState) => state.userReducer,
-    (userReducer) => userReducer.userInfo
-  );
-  const userInfo = useSelector(checkUpUserInfo);
-  const [size, setSize] = useState<string | number>("");
-  const [open, setOpen] = useState(false);
-  const [snackBarOpen, setSnackBarOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const PopOverOpen = Boolean(anchorEl);
-  const popOverId = open ? "simple-popover" : undefined;
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSize(event.target.value as number);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const snackBarHandleClose = () => {
-    setSnackBarOpen(false);
-  };
-  const touchOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const touchClose = () => {
-    setAnchorEl(null);
-  };
-  const handleAddToCart = () => {
-    const productId = props.cartProductInfo._id;
-    const cartProductInfo = {
-      title: props.cartProductInfo.title,
-      size: size,
-      price: props.cartProductInfo.price,
-      image: props.cartProductInfo.images[0],
-      section: props.cartProductInfo.section,
-      color: props.cartProductInfo.color,
-      _id: props.cartProductInfo._id,
-    };
-    if (size === "") {
-      Swal.fire("사이즈를 선택해주세요", "", "info");
-      return;
-    } else if (userInfo.data?.isAuth === false) {
-      Swal.fire("로그인을 해주세요", "", "info");
-      router.push("/signIn");
-      return;
-    } else {
-      dispatch({
-        type: ADD_TO_CART_REQUEST,
-        id: productId,
-        cartProductInfo: cartProductInfo,
-        size: size,
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (size > 0) {
-      setSnackBarOpen(true);
-    }
-  }, [userInfo.data?.cart]);
-
-  return (
-    <ProductDetailContainer>
-      <CardContent>
-        <Typography variant="h6" className={classes.title}>
-          {props.cartProductInfo?.title} &nbsp;
-          <PopOverButton onClick={touchOpen}>
-            <HelpIcon fontSize="small" />
-            자세히 알아보기
-          </PopOverButton>
-          <Popover
-            id={popOverId}
-            open={PopOverOpen}
-            anchorEl={anchorEl}
-            onClose={touchClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
-            <Description
-              description={props.cartProductInfo?.description}
-              descriptionTitle={props.cartProductInfo?.descriptionTitle}
-            />
-          </Popover>
-        </Typography>
-        <Typography variant="body2">
-          {props.cartProductInfo?.price} 원
-          <br />
-          색상: {props.cartProductInfo?.color}
-        </Typography>
-      </CardContent>
-      <Divider classes={{ root: classes.divider }} />
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-controlled-open-select-label">사이즈</InputLabel>
-        <Select
-          labelId="demo-controlled-open-select-label"
-          id="demo-controlled-open-select"
-          open={open}
-          onClose={handleClose}
-          onOpen={handleOpen}
-          value={size}
-          onChange={handleChange}
-        >
-          <MenuItem value="">
-            <em>사이즈 선택</em>
-          </MenuItem>
-          {props.cartProductInfo?.size?.find((values) => values === 1) ? (
-            <MenuItem value={1}>S</MenuItem>
-          ) : null}
-          {props.cartProductInfo?.size?.find((values) => values === 2) ? (
-            <MenuItem value={2}>M</MenuItem>
-          ) : null}
-          {props.cartProductInfo?.size?.find((values) => values === 3) ? (
-            <MenuItem value={3}>L</MenuItem>
-          ) : null}
-        </Select>
-      </FormControl>
-
-      <Divider classes={{ root: classes.divider }} />
-      <Button type="submit" onClick={handleAddToCart}>
-        장바구니
-      </Button>
-      {userInfo.loading === true ? (
-        <ProgressContainer>
-          <CircularProgress style={{ position: "absolute", color: "black" }} />
-        </ProgressContainer>
-      ) : null}
-      <Snackbar
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        open={snackBarOpen}
-        onClose={snackBarHandleClose}
-        message="장바구니에 담겼습니다."
-        key={"bottom" + "right"}
-      />
-    </ProductDetailContainer>
-  );
-}
-
-export default ProductDetail;

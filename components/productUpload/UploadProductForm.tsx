@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, ChangeEvent, useEffect, useCallback } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -105,35 +105,48 @@ function UploadProductForm(props: any) {
     amountOfM,
     amountOfL,
   } = inputs;
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
-  const updateImages = (propedImages: Images) => {
-    setImages(propedImages);
-  };
-  const categoryChange = (e: ChangeEvent<{ value: unknown }>) => {
-    setCategory(e.target.value as number);
-  };
-  const sectionChange = (e: ChangeEvent<{ value: unknown }>) => {
-    setSection(e.target.value as string);
-  };
-  const sizeValueChange = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const parsedValue = parseInt((e.target as HTMLButtonElement).value);
-    const currentIndex = sizeValues.indexOf(parsedValue);
-    const newSizeValues = [...sizeValues];
-    if (currentIndex === -1) {
-      newSizeValues.push(parsedValue);
-    } else {
-      newSizeValues.splice(currentIndex, 1);
-    }
-    setSizeValues(newSizeValues);
-  };
+  const onChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setInputs({
+        ...inputs,
+        [name]: value,
+      });
+    },
+    [inputs]
+  );
+  const updateImages = useCallback(
+    (propedImages: Images) => {
+      setImages(propedImages);
+    },
+    [images]
+  );
+  const categoryChange = useCallback(
+    (e: ChangeEvent<{ value: unknown }>) => {
+      setCategory(e.target.value as number);
+    },
+    [category]
+  );
+  const sectionChange = useCallback(
+    (e: ChangeEvent<{ value: unknown }>) => {
+      setSection(e.target.value as string);
+    },
+    [section]
+  );
+  const sizeValueChange = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      const parsedValue = parseInt((e.target as HTMLButtonElement).value);
+      const currentIndex = sizeValues.indexOf(parsedValue);
+      const newSizeValues = [...sizeValues];
+      if (currentIndex === -1) {
+        newSizeValues.push(parsedValue);
+      } else {
+        newSizeValues.splice(currentIndex, 1);
+      }
+      setSizeValues(newSizeValues);
+    },
+    [sizeValues]
+  );
   const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
@@ -185,7 +198,7 @@ function UploadProductForm(props: any) {
       router.push("/");
     }
   }, [uploadProductInfo?.data?.upLoadProductSuccess]);
-  console.log(sizeValues, inputs.amountOfS);
+
   return (
     <Container className={classes.container}>
       <CssBaseline />

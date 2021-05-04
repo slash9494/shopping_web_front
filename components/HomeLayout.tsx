@@ -3,6 +3,58 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import CardMedia from "@material-ui/core/CardMedia";
 import Link from "next/link";
+import Footer from "./Footer";
+
+function HomeLayout() {
+  return (
+    <>
+      <LandingPageContainer>
+        <DirectoryContainer>
+          <Link href="/shop/manPage">
+            <MenuItemContainer>
+              <CardMedia
+                className="image"
+                style={styles.imageStyle}
+                image="/ManCategory.jpg"
+                title="Man"
+              />
+              <ContentContainer>MAN</ContentContainer>
+            </MenuItemContainer>
+          </Link>
+          <Link href="/shop/womanPage">
+            <MenuItemContainer>
+              <CardMedia
+                className="image"
+                style={styles.imageStyle}
+                image="/WomanCategory.jpg"
+                title="Man"
+              />
+              <ContentContainer>WOMAN</ContentContainer>
+            </MenuItemContainer>
+          </Link>
+          <Link href="/shop/kidPage">
+            <MenuItemContainer>
+              <CardMedia
+                className="image"
+                style={styles.imageStyle}
+                image="KidCategory.jpg"
+                title="Man"
+              />
+              <ContentContainer>KID</ContentContainer>
+            </MenuItemContainer>
+          </Link>
+        </DirectoryContainer>
+        <Footer />
+      </LandingPageContainer>
+    </>
+  );
+}
+
+HomeLayout.prototypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default HomeLayout;
 
 const styles = {
   imageStyle: {
@@ -92,51 +144,3 @@ const ContentContainer = styled.div`
   opacity: 0.7;
   position: absolute;
 `;
-
-function HomeLayout() {
-  return (
-    <LandingPageContainer>
-      <DirectoryContainer>
-        <Link href="/shop/manPage">
-          <MenuItemContainer>
-            <CardMedia
-              className="image"
-              style={styles.imageStyle}
-              image="/ManCategory.jpg"
-              title="Man"
-            />
-            <ContentContainer>MAN</ContentContainer>
-          </MenuItemContainer>
-        </Link>
-        <Link href="/shop/womanPage">
-          <MenuItemContainer>
-            <CardMedia
-              className="image"
-              style={styles.imageStyle}
-              image="/WomanCategory.jpg"
-              title="Man"
-            />
-            <ContentContainer>WOMAN</ContentContainer>
-          </MenuItemContainer>
-        </Link>
-        <Link href="/shop/kidPage">
-          <MenuItemContainer>
-            <CardMedia
-              className="image"
-              style={styles.imageStyle}
-              image="KidCategory.jpg"
-              title="Man"
-            />
-            <ContentContainer>KID</ContentContainer>
-          </MenuItemContainer>
-        </Link>
-      </DirectoryContainer>
-    </LandingPageContainer>
-  );
-}
-
-HomeLayout.prototypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default HomeLayout;

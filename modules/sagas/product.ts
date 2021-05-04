@@ -49,7 +49,6 @@ async function fileUploadAPI({ formData, config }: FileUploadAPIProps) {
     formData,
     config
   );
-  console.log(response.data);
   return response.data;
 }
 

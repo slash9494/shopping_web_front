@@ -6,9 +6,12 @@ import { LinkContainer } from "../HeaderContainer";
 import Link from "next/link";
 import Button from "@material-ui/core/Button";
 import { useDispatch } from "react-redux";
-import { logOutActionAsync } from "../../../modules";
+import { logOutActionAsync, UserInfo } from "../../../modules";
 
-function DrawerList(props: any) {
+interface Props {
+  userInfo: { data: UserInfo };
+}
+function DrawerList(props: Props) {
   const dispatch = useDispatch();
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -1,86 +1,40 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState, useCallback } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import Button from "@material-ui/core/Button";
 import {
   makeStyles,
   withStyles,
   Theme,
   createStyles,
-} from "@material-ui/core/styles";
+  Button,
+  Badge,
+  Menu,
+} from "@material-ui/core";
 import { logOutActionAsync } from "../../../modules";
-import { Badge } from "@material-ui/core";
 import Link from "next/link";
-import Menu from "@material-ui/core/Menu";
 interface LogInNavBarProps {
   badgeCount: number;
   showCartDrawer: any;
   userName: string;
 }
 
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  @media screen and (max-width: 956px) {
-    flex-direction: column;
-  }
-`;
-
-const LinkContainer = styled.div`
-  padding: 10px 15px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-decoration: none;
-  color: black;
-`;
-const BagContainer = styled.div`
-  padding: 10px 15px;
-  font-size: 1rem;
-  text-decoration: none;
-  color: black;
-  @media screen and (max-width: 956px) {
-    display: none;
-  }
-`;
-const useStyles = makeStyles({
-  button: {
-    fontSize: "1rem",
-    fontWeight: "bold",
-  },
-  drawer: {
-    zIndex: 10,
-    position: "fixed",
-  },
-});
-export const StyledBadge = withStyles((theme: Theme) =>
-  createStyles({
-    badge: {
-      right: 21,
-      top: 25,
-      fontSize: 15,
-      [theme.breakpoints.down("sm")]: {
-        top: 20,
-        right: 16,
-        fontSize: 14,
-      },
-    },
-  })
-)(Badge);
 function LoggedInNavBar(props: LogInNavBarProps) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(logOutActionAsync.request());
-  };
+  }, []);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    },
+    [anchorEl]
+  );
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, [anchorEl]);
 
   return (
     <Container>
@@ -133,3 +87,52 @@ function LoggedInNavBar(props: LogInNavBarProps) {
 }
 
 export default LoggedInNavBar;
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  @media screen and (max-width: 956px) {
+    flex-direction: column;
+  }
+`;
+
+const LinkContainer = styled.div`
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-decoration: none;
+  color: black;
+`;
+const BagContainer = styled.div`
+  padding: 10px 15px;
+  font-size: 1rem;
+  text-decoration: none;
+  color: black;
+  @media screen and (max-width: 956px) {
+    display: none;
+  }
+`;
+const useStyles = makeStyles({
+  button: {
+    fontSize: "1rem",
+    fontWeight: "bold",
+  },
+  drawer: {
+    zIndex: 10,
+    position: "fixed",
+  },
+});
+export const StyledBadge = withStyles((theme: Theme) =>
+  createStyles({
+    badge: {
+      right: 21,
+      top: 25,
+      fontSize: 15,
+      [theme.breakpoints.down("sm")]: {
+        top: 20,
+        right: 16,
+        fontSize: 14,
+      },
+    },
+  })
+)(Badge);

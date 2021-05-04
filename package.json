@@ -1,6 +1,7 @@
 {
-  "name": "with-typescript",
+  "name": "shopping_web",
   "version": "1.0.0",
+  "author": "LYH",
   "scripts": {
     "dev": "next -p 3100",
     "build": "next build",

@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { Button, Drawer } from "@material-ui/core";
 import FilterList from "./FilterList";
 import SearchProduct from "./SearchProduct";
-
+interface Props {
+  sizeFilters: (values: number[]) => void;
+  categoryFilters: (values: number[]) => void;
+  priceFilters: (value: string) => void;
+  searchValue: (value: string) => void;
+}
 const FilterContainer = styled.div`
   display: flex;
   width: 100vw;
@@ -13,23 +18,35 @@ const FilterContainer = styled.div`
   z-index: 6;
 `;
 
-function ItemFilter(props: any) {
+function ItemFilter(props: Props) {
   const [open, setOpen] = useState(false);
-  const handleDrawerOpen = () => {
+  const handleDrawerOpen = useCallback(() => {
     setOpen(!open);
-  };
-  const handleSizeFilters = (value: any) => {
-    props.sizeFilters(value);
-  };
-  const handleCategoryFilters = (value: any) => {
-    props.categoryFilters(value);
-  };
-  const handlePriceFilters = (value: any) => {
-    props.priceFilters(value);
-  };
-  const searchValue = (value: any) => {
-    props.searchValue(value);
-  };
+  }, [open]);
+  const handleSizeFilters = useCallback(
+    (value: number[]) => {
+      props.sizeFilters(value);
+    },
+    [props.sizeFilters]
+  );
+  const handleCategoryFilters = useCallback(
+    (value: number[]) => {
+      props.categoryFilters(value);
+    },
+    [props.categoryFilters]
+  );
+  const handlePriceFilters = useCallback(
+    (value: string) => {
+      props.priceFilters(value);
+    },
+    [props.priceFilters]
+  );
+  const searchValue = useCallback(
+    (value: string) => {
+      props.searchValue(value);
+    },
+    [props.searchValue]
+  );
 
   return (
     <FilterContainer>

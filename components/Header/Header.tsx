@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../modules/reducers";
 import LoggedOutNavBar from "./Sections/LoggedOutNavBar";
 import LoggedInNavBar, { StyledBadge } from "./Sections/LoggedInNavBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Hidden from "@material-ui/core/Hidden";
+import {
+  Toolbar,
+  Hidden,
+  IconButton,
+  Drawer,
+  makeStyles,
+  Backdrop,
+  CircularProgress,
+} from "@material-ui/core";
 import Menu from "@material-ui/icons/Menu";
-import IconButton from "@material-ui/core/IconButton";
-import Drawer from "@material-ui/core/Drawer";
-import { makeStyles } from "@material-ui/core/styles";
 import DrawerList from "./Sections/DrawerList";
 import { createSelector } from "reselect";
 import { useRouter } from "next/router";
@@ -30,7 +34,6 @@ import {
   loadKidProductsActionAsync,
 } from "../../modules";
 import CartDrawer from "./Sections/CartDrawer";
-import { Backdrop, CircularProgress } from "@material-ui/core";
 export type Filters = {
   size: string[];
   category: number[];
@@ -63,12 +66,12 @@ function Header() {
     (productReducer) => productReducer.loadProductsInfo
   );
   const productsInfo = useSelector(checkProductDataInfo);
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [badgeCount, setBadgeCount] = useState(0);
   const [backdropOpen, setBackdropOpen] = useState(false);
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = useCallback(() => {
     setMobileOpen(!mobileOpen);
-  };
+  }, [mobileOpen]);
   useEffect(() => {
     if (userInfo.data?.cart?.length > 0) {
       setBadgeCount(userInfo.data?.cart?.length);
@@ -89,10 +92,7 @@ function Header() {
     category: [],
     price: [],
   });
-
-  // const [skip, setSkip] = useState(0);
-  // const [limit, setLimit] = useState(16);
-  const handleFilters = (propedFilters: any[] | any, kind: string) => {
+  function handleFilters<T>(propedFilters: T[] | T, kind: string) {
     const newFilters = { ...filters };
     newFilters[kind] = propedFilters;
     if (kind === "price") {
@@ -101,10 +101,10 @@ function Header() {
     }
     setFilters(newFilters);
     showFilteredResults(newFilters);
-  };
-  const handlePrice = (value: any) => {
+  }
+  const handlePrice = (value) => {
     const data = price;
-    let array: any[] = [];
+    let array: number[] = [];
     for (let key in data) {
       if (data[key].id === parseInt(value)) {
         array = data[key].array;
@@ -115,10 +115,8 @@ function Header() {
   const showFilteredResults = (filters: Filters) => {
     const variables = {
       skip: 0,
-      // limit: limit,
       filters: filters,
     };
-    // setSkip(0);
     if (pathName === "/shop/manPage") {
       dispatch(loadManProductsActionAsync.request(variables));
     } else if (pathName === "/shop/womanPage") {
@@ -141,15 +139,11 @@ function Header() {
     } else if (pathName === "/shop/kidPage") {
       dispatch(loadKidProductsActionAsync.request(variables));
     } else return;
-    // setSkip(0);
   };
   const [open, setOpen] = useState(false);
-  const showCartDrawer = () => {
-    setOpen(true);
-  };
-  const closeCartDrawer = () => {
-    setOpen(false);
-  };
+  const showCartDrawer = useCallback(() => {
+    setOpen(!open);
+  }, [open]);
   return (
     <>
       <HeaderContainer>
@@ -234,13 +228,13 @@ function Header() {
       pathName === "/shop/manPage" ||
       pathName === "/shop/kidPage" ? (
         <ItemFilter
-          sizeFilters={(propedSizeFilters: string[]) =>
+          sizeFilters={(propedSizeFilters: number[]) =>
             handleFilters(propedSizeFilters, "size")
           }
           categoryFilters={(propedCategoryFilters: number[]) =>
             handleFilters(propedCategoryFilters, "category")
           }
-          priceFilters={(propedPriceFilters: number) =>
+          priceFilters={(propedPriceFilters: string) =>
             handleFilters(propedPriceFilters, "price")
           }
           searchValue={upDateSearchTerm}
@@ -248,7 +242,7 @@ function Header() {
       ) : null}
       <CartDrawer
         open={open}
-        closeCartDrawer={closeCartDrawer}
+        closeCartDrawer={showCartDrawer}
         userCartInfo={userInfo.data?.cart}
       />
       <Backdrop open={backdropOpen} style={{ backgroundColor: "white" }}>
