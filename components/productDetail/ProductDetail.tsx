@@ -63,7 +63,7 @@ function ProductDetail(props: ProductDetailProps) {
   const touchClose = useCallback(() => {
     setAnchorEl(null);
   }, [anchorEl]);
-  const handleAddToCart = useCallback(() => {
+  const handleAddToCart = () => {
     const productId = props.productInfo?._id;
     const productInfo = {
       title: props.productInfo?.title,
@@ -89,7 +89,7 @@ function ProductDetail(props: ProductDetailProps) {
         size: size,
       });
     }
-  }, [props, size, userInfo]);
+  };
 
   useEffect(() => {
     if (size > 0) {

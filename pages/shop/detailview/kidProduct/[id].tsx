@@ -14,45 +14,6 @@ import { RootState } from "../../../../modules/reducers";
 import wrapper, { IStore } from "../../../../store/configureStore";
 import axios from "axios";
 import { END } from "redux-saga";
-
-const AppContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  width: 100vw;
-  align-items: center;
-  padding: 0 5vw;
-  position: "absolute";
-  @media screen and (max-width: 1280px) {
-    padding: 0 2vw;
-  }
-  @media screen and (max-width: 1025px) {
-    flex-direction: column;
-  }
-`;
-
-const ImageContainer = styled.div`
-  width: 40vw;
-  padding: 20px 40px 40px 40px;
-  height: 86vh;
-  display: flex;
-  align-items: center;
-  position: relative;
-  justify-content: center;
-  @media screen and (max-width: 769px) {
-    width: 96vw;
-  }
-  @media screen and (max-width: 600px) {
-    height: 50vh;
-    padding: 20px;
-  }
-`;
-
-const DescriptionContainer = styled.div`
-  @media screen and (max-width: 1024px) {
-    display: none;
-  }
-`;
-
 function DetailProduct() {
   const [showThumbNail, setShowThumbNail] = useState(true);
   const [imageState, setImageState] = useState<any>([]);
@@ -118,3 +79,41 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 export default DetailProduct;
+
+const AppContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+  align-items: center;
+  padding: 0 5vw;
+  position: "absolute";
+  @media screen and (max-width: 1280px) {
+    padding: 0 2vw;
+  }
+  @media screen and (max-width: 1025px) {
+    flex-direction: column;
+  }
+`;
+
+const ImageContainer = styled.div`
+  width: 40vw;
+  padding: 20px 40px 40px 40px;
+  height: 86vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+  @media screen and (max-width: 769px) {
+    width: 96vw;
+  }
+  @media screen and (max-width: 600px) {
+    height: 50vh;
+    padding: 20px;
+  }
+`;
+
+const DescriptionContainer = styled.div`
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
